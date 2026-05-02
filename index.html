@@ -1,0 +1,3330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trevo – Shop Smart. Order Instantly via WhatsApp.</title>
+  <link rel="icon" type="image/png" href="cart.png" />
+  <link rel="apple-touch-icon" href="cart.png" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:wght@600;700&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --purple: #7B2D8B;
+      --purple-dark: #5C1F6B;
+      --purple-deep: #1C1C2E;
+      --purple-mid: #A855C0;
+      --purple-light: #F3E8F7;
+      --purple-soft: #EDD9F4;
+      --purple-glow: rgba(123, 45, 139, .18);
+      --text: #1a0a22;
+      --text-muted: #6b5478;
+      --text-light: #a08ab0;
+      --border: #e4d4ee;
+      --bg: #ffffff;
+      --bg-soft: #faf5fc;
+      --bg-card: #ffffff;
+      --shadow-sm: 0 1px 3px rgba(90, 20, 110, .06);
+      --shadow: 0 4px 18px rgba(90, 20, 110, .10);
+      --shadow-lg: 0 12px 44px rgba(90, 20, 110, .15);
+      --radius: 16px;
+      --radius-sm: 10px;
+      --radius-full: 999px;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-soft)
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--purple-mid);
+      border-radius: 3px
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px
+    }
+
+    .hidden {
+      display: none !important
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, .93);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+      transition: box-shadow .2s
+    }
+
+    header.scrolled {
+      box-shadow: var(--shadow)
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      height: 68px
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      flex-shrink: 0
+    }
+
+    .logo-img {
+      height: 86px;
+      width: auto;
+      object-fit: contain;
+      mix-blend-mode: multiply;
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .08))
+    }
+
+    footer .logo-img {
+      filter: brightness(1.6) drop-shadow(0 1px 2px rgba(0, 0, 0, .08));
+      mix-blend-mode: normal
+    }
+
+    .logo-text {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: var(--text)
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+      margin-left: auto
+    }
+
+    .nav-links a {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      color: var(--text-muted);
+      font-weight: 500;
+      font-size: .9rem;
+      transition: all .18s
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--purple-dark);
+      background: var(--purple-light)
+    }
+
+    .cart-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 5px;
+      background: var(--purple);
+      color: white;
+      border-radius: var(--radius-full);
+      font-size: .7rem;
+      font-weight: 700
+    }
+
+    .cart-badge.pulse {
+      animation: badgePop .3s cubic-bezier(.36, .07, .19, .97) both
+    }
+
+    @keyframes badgePop {
+      0% {
+        transform: scale(1)
+      }
+
+      50% {
+        transform: scale(1.45)
+      }
+
+      100% {
+        transform: scale(1)
+      }
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: var(--bg-soft);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-full);
+      padding: 8px 16px;
+      gap: 8px;
+      transition: border-color .18s, box-shadow .18s;
+      flex: 1;
+      max-width: 280px
+    }
+
+    .search-box:focus-within {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 3px var(--purple-glow)
+    }
+
+    .search-box input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .9rem;
+      color: var(--text);
+      width: 100%
+    }
+
+    .search-box svg {
+      flex-shrink: 0;
+      color: var(--text-light)
+    }
+
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      color: var(--text);
+      border-radius: var(--radius-sm)
+    }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(29, 5, 48, .55);
+      backdrop-filter: blur(4px)
+    }
+
+    .mobile-menu.open {
+      display: flex
+    }
+
+    .mobile-menu-panel {
+      background: white;
+      width: min(340px, 90vw);
+      height: 100%;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: var(--shadow-lg);
+      animation: slideIn .25s ease
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(-100%)
+      }
+
+      to {
+        transform: translateX(0)
+      }
+    }
+
+    .mobile-menu-panel a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      color: var(--text-muted);
+      font-weight: 500;
+      font-size: 1rem;
+      transition: all .18s
+    }
+
+    .mobile-menu-panel a:hover,
+    .mobile-menu-panel a.active {
+      color: var(--purple-dark);
+      background: var(--purple-light)
+    }
+
+    .mobile-close {
+      align-self: flex-end;
+      background: var(--bg-soft);
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      cursor: pointer;
+      color: var(--text-muted);
+      margin-bottom: 8px
+    }
+
+    .page {
+      display: none;
+      animation: fadeUp .35s ease both
+    }
+
+    .page.active {
+      display: block
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(18px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: var(--radius-full);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: .9rem;
+      cursor: pointer;
+      border: none;
+      transition: all .2s;
+      text-decoration: none;
+      white-space: nowrap
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--purple-mid), var(--purple-dark));
+      color: white;
+      box-shadow: 0 4px 14px rgba(123, 45, 139, .38)
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(123, 45, 139, .50)
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--purple-dark);
+      border: 2px solid var(--purple)
+    }
+
+    .btn-outline:hover {
+      background: var(--purple-light)
+    }
+
+    .btn-ghost {
+      background: var(--bg-soft);
+      color: var(--text-muted);
+      border: 1.5px solid var(--border)
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--purple);
+      color: var(--purple-dark);
+      background: var(--purple-light)
+    }
+
+    .btn-wa {
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      color: white;
+      box-shadow: 0 4px 14px rgba(37, 211, 102, .35)
+    }
+
+    .btn-wa:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(37, 211, 102, .45)
+    }
+
+    .btn-sm {
+      padding: 8px 18px;
+      font-size: .82rem
+    }
+
+    .btn-lg {
+      padding: 16px 36px;
+      font-size: 1rem
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(145deg, #faf5fc 0%, #ffffff 50%, #f3e8f7 100%);
+      min-height: 88vh;
+      display: flex;
+      align-items: center;
+      padding: 80px 0
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 700px;
+      height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(168, 85, 192, .13) 0%, transparent 70%);
+      top: -200px;
+      right: -200px;
+      pointer-events: none
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(123, 45, 139, .09) 0%, transparent 70%);
+      bottom: -150px;
+      left: -100px;
+      pointer-events: none
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      position: relative;
+      z-index: 1
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--purple-light);
+      color: var(--purple-dark);
+      border: 1px solid var(--purple-soft);
+      border-radius: var(--radius-full);
+      padding: 6px 14px;
+      font-size: .8rem;
+      font-weight: 600;
+      margin-bottom: 24px
+    }
+
+    .hero-badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--purple);
+      animation: blink 1.8s infinite
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: .3
+      }
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.6rem, 5vw, 4rem);
+      font-weight: 700;
+      line-height: 1.12;
+      letter-spacing: -.02em;
+      color: var(--text);
+      margin-bottom: 20px
+    }
+
+    .hero-title em {
+      font-style: normal;
+      color: var(--purple-dark)
+    }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 460px;
+      margin-bottom: 36px;
+      line-height: 1.7
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap
+    }
+
+    .hero-visual {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center
+    }
+
+    .hero-card {
+      width: 100%;
+      max-width: 420px;
+      background: white;
+      border-radius: 28px;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden
+    }
+
+    .hero-card-img {
+      width: 100%;
+      height: 280px;
+      background: linear-gradient(135deg, #f3e8f7 0%, #e9d5f0 50%, #d8b4e8 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden
+    }
+
+    .hero-card-img::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 30% 70%, rgba(123, 45, 139, .15), transparent)
+    }
+
+    .hero-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover
+    }
+
+    .hero-emoji {
+      font-size: 6rem;
+      filter: drop-shadow(0 8px 24px rgba(0, 0, 0, .12))
+    }
+
+    .hero-card-body {
+      padding: 24px
+    }
+
+    .hero-card-tag {
+      background: var(--purple-light);
+      color: var(--purple-dark);
+      border-radius: var(--radius-full);
+      padding: 4px 12px;
+      font-size: .75rem;
+      font-weight: 600;
+      display: inline-block;
+      margin-bottom: 10px
+    }
+
+    .hero-card-name {
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 6px
+    }
+
+    .hero-card-price {
+      color: var(--purple-dark);
+      font-weight: 700;
+      font-size: 1.3rem
+    }
+
+    .hero-card-old {
+      color: var(--text-light);
+      text-decoration: line-through;
+      font-size: .9rem;
+      margin-left: 8px
+    }
+
+    .hero-float {
+      position: absolute;
+      background: white;
+      border-radius: 14px;
+      padding: 12px 18px;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: .82rem;
+      font-weight: 600
+    }
+
+    .hero-float-1 {
+      top: -20px;
+      left: -30px;
+      animation: float 3s ease-in-out infinite
+    }
+
+    .hero-float-2 {
+      bottom: 30px;
+      right: -30px;
+      animation: float 3s ease-in-out infinite reverse
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0)
+      }
+
+      50% {
+        transform: translateY(-8px)
+      }
+    }
+
+    .hero-float-icon {
+      font-size: 1.4rem
+    }
+
+    .trust-bar {
+      background: var(--bg-soft);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 28px 0
+    }
+
+    .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px
+    }
+
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 20px;
+      border-radius: var(--radius);
+      background: white;
+      box-shadow: var(--shadow-sm);
+      transition: transform .2s, box-shadow .2s
+    }
+
+    .trust-item:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow)
+    }
+
+    .trust-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      flex-shrink: 0;
+      background: var(--purple-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem
+    }
+
+    .trust-label {
+      font-weight: 600;
+      font-size: .95rem;
+      margin-bottom: 2px
+    }
+
+    .trust-desc {
+      color: var(--text-muted);
+      font-size: .82rem
+    }
+
+    .section {
+      padding: 80px 0
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 48px
+    }
+
+    .section-eyebrow {
+      display: inline-block;
+      color: var(--purple-dark);
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 12px
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: 14px
+    }
+
+    .section-sub {
+      color: var(--text-muted);
+      max-width: 480px;
+      margin: 0 auto
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 24px
+    }
+
+    .product-card {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: transform .25s, box-shadow .25s;
+      position: relative;
+      cursor: pointer
+    }
+
+    .product-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg)
+    }
+
+    .product-img {
+      width: 100%;
+      height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform .35s
+    }
+
+    .product-card:hover .product-img {
+      transform: scale(1.04)
+    }
+
+    .badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 2;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase
+    }
+
+    .badge-new {
+      background: var(--purple);
+      color: white
+    }
+
+    .badge-sale {
+      background: #dc2626;
+      color: white
+    }
+
+    .badge-hot {
+      background: #f97316;
+      color: white
+    }
+
+    .product-body {
+      padding: 18px
+    }
+
+    .product-category {
+      color: var(--text-light);
+      font-size: .75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 6px
+    }
+
+    .product-name {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 6px;
+      line-height: 1.3
+    }
+
+    .product-desc {
+      color: var(--text-muted);
+      font-size: .82rem;
+      margin-bottom: 14px;
+      line-height: 1.5
+    }
+
+    .product-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap
+    }
+
+    .product-price {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--purple-dark)
+    }
+
+    .add-btn {
+      background: var(--purple-light);
+      color: var(--purple-dark);
+      border: none;
+      border-radius: var(--radius-full);
+      padding: 9px 18px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: .82rem;
+      cursor: pointer;
+      transition: all .2s;
+      display: flex;
+      align-items: center;
+      gap: 6px
+    }
+
+    .add-btn:hover {
+      background: var(--purple);
+      color: white;
+      transform: scale(1.04)
+    }
+
+    .add-btn.adding {
+      animation: addPop .4s cubic-bezier(.36, .07, .19, .97) both
+    }
+
+    @keyframes addPop {
+      0% {
+        transform: scale(1)
+      }
+
+      35% {
+        transform: scale(.9)
+      }
+
+      70% {
+        transform: scale(1.15)
+      }
+
+      100% {
+        transform: scale(1)
+      }
+    }
+
+    .category-filter {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 32px
+    }
+
+    .cat-btn {
+      padding: 8px 20px;
+      border-radius: var(--radius-full);
+      border: 1.5px solid var(--border);
+      background: white;
+      color: var(--text-muted);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: .85rem;
+      cursor: pointer;
+      transition: all .18s
+    }
+
+    .cat-btn:hover,
+    .cat-btn.active {
+      background: var(--purple);
+      border-color: var(--purple);
+      color: white
+    }
+
+    .products-page-header {
+      background: linear-gradient(135deg, #faf5fc, #ffffff);
+      padding: 60px 0 40px;
+      border-bottom: 1px solid var(--border)
+    }
+
+    .products-search {
+      display: flex;
+      align-items: center;
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-full);
+      padding: 10px 20px;
+      gap: 10px;
+      max-width: 420px;
+      margin-top: 20px;
+      box-shadow: var(--shadow-sm);
+      transition: border-color .18s, box-shadow .18s
+    }
+
+    .products-search:focus-within {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 3px var(--purple-glow)
+    }
+
+    .products-search input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .95rem;
+      color: var(--text);
+      width: 100%
+    }
+
+    .cart-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 32px;
+      align-items: start;
+      padding: 60px 0
+    }
+
+    .cart-empty {
+      text-align: center;
+      padding: 80px 20px
+    }
+
+    .cart-empty-icon {
+      font-size: 5rem;
+      margin-bottom: 20px;
+      opacity: .5
+    }
+
+    .cart-empty h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px
+    }
+
+    .cart-empty p {
+      color: var(--text-muted);
+      margin-bottom: 28px
+    }
+
+    .cart-items {
+      display: flex;
+      flex-direction: column;
+      gap: 16px
+    }
+
+    .cart-item {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      transition: box-shadow .2s
+    }
+
+    .cart-item:hover {
+      box-shadow: var(--shadow)
+    }
+
+    .cart-item-img {
+      width: 80px;
+      height: 80px;
+      border-radius: 12px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.4rem;
+      background: var(--bg-soft)
+    }
+
+    .cart-item-info {
+      flex: 1;
+      min-width: 0
+    }
+
+    .cart-item-name {
+      font-weight: 700;
+      margin-bottom: 4px
+    }
+
+    .cart-item-price {
+      color: var(--purple-dark);
+      font-weight: 600;
+      font-size: .9rem;
+      margin-bottom: 12px
+    }
+
+    .qty-control {
+      display: flex;
+      align-items: center;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      width: fit-content
+    }
+
+    .qty-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      width: 34px;
+      height: 34px;
+      font-size: 1.1rem;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .15s, color .15s
+    }
+
+    .qty-btn:hover {
+      background: var(--purple-light);
+      color: var(--purple-dark)
+    }
+
+    .qty-val {
+      width: 36px;
+      text-align: center;
+      font-weight: 700;
+      font-size: .9rem;
+      border: none;
+      background: transparent;
+      outline: none;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text)
+    }
+
+    .cart-item-remove {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-light);
+      font-size: 1.2rem;
+      padding: 6px;
+      border-radius: 8px;
+      transition: color .15s, background .15s;
+      flex-shrink: 0
+    }
+
+    .cart-item-remove:hover {
+      color: #dc2626;
+      background: #fee2e2
+    }
+
+    .cart-summary {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      position: sticky;
+      top: 90px
+    }
+
+    .cart-summary h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border)
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: .9rem
+    }
+
+    .summary-row.total {
+      font-weight: 700;
+      font-size: 1.1rem;
+      padding-top: 12px;
+      border-top: 2px solid var(--border);
+      margin-top: 12px
+    }
+
+    .summary-row.total .val {
+      color: var(--purple-dark)
+    }
+
+    .summary-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px
+    }
+
+    .summary-btns .btn {
+      justify-content: center
+    }
+
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      padding: 80px 0;
+      align-items: start
+    }
+
+    .contact-info h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 14px
+    }
+
+    .contact-info p {
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      line-height: 1.7
+    }
+
+    .contact-tiles {
+      display: flex;
+      flex-direction: column;
+      gap: 14px
+    }
+
+    .contact-tile {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 20px;
+      background: var(--bg-soft);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition: border-color .2s
+    }
+
+    .contact-tile:hover {
+      border-color: var(--purple)
+    }
+
+    .contact-tile-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--purple-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0
+    }
+
+    .contact-tile strong {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 2px
+    }
+
+    .contact-tile span {
+      color: var(--text-muted);
+      font-size: .85rem
+    }
+
+    .contact-form {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px;
+      box-shadow: var(--shadow-sm)
+    }
+
+    .contact-form h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 24px
+    }
+
+    .form-group {
+      margin-bottom: 18px
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      font-size: .85rem;
+      margin-bottom: 6px;
+      color: var(--text)
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: 'DM Sans', sans-serif;
+      font-size: .9rem;
+      color: var(--text);
+      background: var(--bg-soft);
+      outline: none;
+      transition: border-color .18s, box-shadow .18s;
+      resize: vertical
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 3px var(--purple-glow);
+      background: white
+    }
+
+    .form-group textarea {
+      min-height: 130px
+    }
+
+    .form-success {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 18px;
+      background: var(--purple-light);
+      border: 1px solid var(--purple-soft);
+      border-radius: var(--radius-sm);
+      color: var(--purple-dark);
+      font-weight: 600;
+      font-size: .9rem;
+      margin-top: 16px
+    }
+
+    .wa-float {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 150;
+      display: flex;
+      align-items: center;
+      gap: 10px
+    }
+
+    .wa-float-label {
+      background: white;
+      color: var(--text);
+      padding: 8px 16px;
+      border-radius: var(--radius-full);
+      box-shadow: var(--shadow-lg);
+      font-weight: 600;
+      font-size: .82rem;
+      white-space: nowrap
+    }
+
+    .wa-float-btn {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 20px rgba(37, 211, 102, .4);
+      text-decoration: none;
+      transition: transform .2s, box-shadow .2s;
+      animation: waPulse 2.5s infinite
+    }
+
+    .wa-float-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 10px 28px rgba(37, 211, 102, .55)
+    }
+
+    .wa-float-btn svg {
+      width: 30px;
+      height: 30px;
+      fill: white
+    }
+
+    @keyframes waPulse {
+
+      0%,
+      100% {
+        box-shadow: 0 6px 20px rgba(37, 211, 102, .4)
+      }
+
+      50% {
+        box-shadow: 0 6px 28px rgba(37, 211, 102, .6), 0 0 0 8px rgba(37, 211, 102, .08)
+      }
+    }
+
+    .toast-container {
+      position: fixed;
+      top: 86px;
+      right: 24px;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none
+    }
+
+    .toast {
+      background: white;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--purple);
+      border-radius: 12px;
+      padding: 14px 18px;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 500;
+      font-size: .88rem;
+      max-width: 300px;
+      animation: toastIn .3s ease both
+    }
+
+    .toast.removing {
+      animation: toastOut .3s ease both
+    }
+
+    @keyframes toastIn {
+      from {
+        opacity: 0;
+        transform: translateX(60px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0)
+      }
+    }
+
+    @keyframes toastOut {
+      from {
+        opacity: 1;
+        transform: translateX(0)
+      }
+
+      to {
+        opacity: 0;
+        transform: translateX(60px)
+      }
+    }
+
+    footer {
+      background: linear-gradient(180deg, #1C1C2E 0%, #15151F 100%);
+      color: rgba(255, 255, 255, .75);
+      padding: 60px 0 32px
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px
+    }
+
+    .footer-brand .logo-text {
+      color: white
+    }
+
+    .footer-brand p {
+      margin-top: 12px;
+      font-size: .88rem;
+      line-height: 1.7;
+      max-width: 280px
+    }
+
+    .footer-col h4 {
+      color: white;
+      font-weight: 700;
+      margin-bottom: 16px;
+      font-size: .9rem
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px
+    }
+
+    .footer-col ul li a {
+      color: rgba(255, 255, 255, .55);
+      text-decoration: none;
+      font-size: .85rem;
+      transition: color .18s;
+      cursor: pointer
+    }
+
+    .footer-col ul li a:hover {
+      color: #ffffff
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, .08);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: .8rem;
+      flex-wrap: wrap;
+      gap: 8px
+    }
+
+    .footer-wa-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(37, 211, 102, .12);
+      color: #a5f3c4;
+      border: 1px solid rgba(37, 211, 102, .25);
+      border-radius: var(--radius-full);
+      padding: 8px 18px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: .82rem;
+      transition: background .2s
+    }
+
+    .footer-wa-btn:hover {
+      background: rgba(37, 211, 102, .22)
+    }
+
+    /* Product Detail Modal */
+    .pd-modal-panel {
+      position: relative;
+      max-width: 960px;
+      width: 92%;
+      max-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      animation: modalSlideUp .3s ease both;
+      overflow: hidden;
+    }
+
+    .pd-close-btn {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      z-index: 10;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      transition: all .2s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .pd-close-btn:hover {
+      background: var(--purple-light);
+      color: var(--purple-dark);
+      transform: scale(1.05);
+    }
+
+    .pd-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      grid-template-rows: minmax(0, 1fr);
+      gap: 0;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .pd-gallery {
+      padding: 24px;
+      background: #fcfafc;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      overflow-y: auto;
+      min-height: 0;
+    }
+
+    .pd-main-img-wrap {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 14px;
+      overflow: hidden;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-sm)
+    }
+
+    .pd-main-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity .25s ease
+    }
+
+    .pd-thumbs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: thin
+    }
+
+    .pd-thumbs::-webkit-scrollbar {
+      height: 4px
+    }
+
+    .pd-thumbs::-webkit-scrollbar-thumb {
+      background: var(--purple-mid);
+      border-radius: 2px
+    }
+
+    .pd-thumb {
+      width: 64px;
+      height: 64px;
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 2px solid transparent;
+      flex-shrink: 0;
+      transition: border-color .2s, transform .2s;
+      background: white
+    }
+
+    .pd-thumb:hover {
+      transform: scale(1.06)
+    }
+
+    .pd-thumb.active {
+      border-color: var(--purple)
+    }
+
+    .pd-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover
+    }
+
+    .pd-info {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    .pd-info-header {
+      padding: 32px 32px 0 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+
+    .pd-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      width: fit-content
+    }
+
+    .pd-category {
+      color: var(--text-light);
+      font-size: .78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .1em
+    }
+
+    .pd-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      line-height: 1.25;
+      color: var(--text)
+    }
+
+    .pd-price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      flex-wrap: wrap
+    }
+
+    .pd-price {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--purple-dark)
+    }
+
+    .pd-old-price {
+      font-size: 1rem;
+      color: var(--text-light);
+      text-decoration: line-through
+    }
+
+    .pd-save {
+      background: #dcfce7;
+      color: #166534;
+      font-size: .75rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: var(--radius-full)
+    }
+
+    .pd-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 16px 32px 16px 28px;
+      flex-shrink: 0;
+    }
+
+    .pd-body {
+      padding: 0 32px 32px 28px;
+      font-size: .9rem;
+      color: var(--text);
+      line-height: 1.7;
+      overflow-y: auto;
+    }
+
+    .pd-body h1,
+    .pd-body h2,
+    .pd-body h3 {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      margin: 14px 0 8px;
+      color: var(--text)
+    }
+
+    .pd-body p {
+      margin-bottom: 10px
+    }
+
+    .pd-body ul {
+      padding-left: 18px;
+      margin-bottom: 10px
+    }
+
+    .pd-body li {
+      margin-bottom: 6px
+    }
+
+    .pd-body strong,
+    .pd-body b {
+      color: var(--text)
+    }
+
+    .pd-body hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 14px 0
+    }
+
+    .pd-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    @media (max-width: 900px) {
+      .pd-modal-panel {
+        overflow-y: auto;
+        max-width: 520px;
+      }
+
+      .pd-close-btn {
+        top: 12px;
+        right: 12px;
+      }
+
+      .pd-layout {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto;
+        overflow: visible;
+      }
+
+      .pd-gallery {
+        border-radius: var(--radius) var(--radius) 0 0;
+        overflow-y: visible;
+      }
+
+      .pd-info {
+        overflow-y: visible;
+        padding: 0;
+      }
+
+      .pd-info-header {
+        padding: 24px 20px 0 20px;
+      }
+
+      .pd-divider {
+        margin: 16px 20px;
+      }
+
+      .pd-body {
+        padding: 0 20px 24px 20px;
+        overflow-y: visible;
+      }
+
+      .pd-title {
+        font-size: 1.25rem
+      }
+
+      .pd-main-img-wrap {
+        aspect-ratio: 4/3
+      }
+    }
+
+    /* Modal Overlay */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      background: rgba(29, 5, 48, .55);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      animation: fadeIn .2s ease
+    }
+
+    .modal-overlay.open {
+      display: flex
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0
+      }
+
+      to {
+        opacity: 1
+      }
+    }
+
+    .modal-panel {
+      background: white;
+      border-radius: var(--radius);
+      max-width: 640px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+      animation: modalSlideUp .3s ease both
+    }
+
+    @keyframes modalSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 28px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: white;
+      z-index: 2;
+      border-radius: var(--radius) var(--radius) 0 0
+    }
+
+    .modal-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: var(--text)
+    }
+
+    .modal-close {
+      background: var(--bg-soft);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      transition: all .18s
+    }
+
+    .modal-close:hover {
+      background: var(--purple-light);
+      color: var(--purple-dark);
+      border-color: var(--purple)
+    }
+
+    .modal-body {
+      padding: 28px;
+      line-height: 1.8;
+      color: var(--text)
+    }
+
+    .modal-body h3 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      margin-top: 24px;
+      margin-bottom: 10px;
+      color: var(--text)
+    }
+
+    .modal-body h3:first-child {
+      margin-top: 0
+    }
+
+    .modal-body p {
+      color: var(--text-muted);
+      font-size: .92rem;
+      margin-bottom: 14px
+    }
+
+    .modal-body ul {
+      padding-left: 20px;
+      margin-bottom: 14px
+    }
+
+    .modal-body ul li {
+      color: var(--text-muted);
+      font-size: .92rem;
+      margin-bottom: 6px
+    }
+
+    .modal-body .info-card {
+      background: var(--bg-soft);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 18px 22px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px
+    }
+
+    .modal-body .info-card-icon {
+      font-size: 1.6rem;
+      flex-shrink: 0;
+      margin-top: 2px
+    }
+
+    .modal-body .info-card-content strong {
+      display: block;
+      color: var(--text);
+      font-weight: 700;
+      margin-bottom: 4px;
+      font-size: .95rem
+    }
+
+    .modal-body .info-card-content span {
+      color: var(--text-muted);
+      font-size: .88rem
+    }
+
+    .modal-body .step-list {
+      list-style: none;
+      padding: 0;
+      counter-reset: steps
+    }
+
+    .modal-body .step-list li {
+      counter-increment: steps;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border)
+    }
+
+    .modal-body .step-list li:last-child {
+      border-bottom: none
+    }
+
+    .modal-body .step-list li::before {
+      content: counter(steps);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple-mid), var(--purple-dark));
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .82rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 2px
+    }
+
+    /* Delivery Option Selector */
+    .delivery-options {
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border)
+    }
+
+    .delivery-options label.delivery-label {
+      display: block;
+      font-weight: 600;
+      font-size: .85rem;
+      margin-bottom: 10px;
+      color: var(--text)
+    }
+
+    .delivery-option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all .18s;
+      margin-bottom: 8px;
+      position: relative
+    }
+
+    .delivery-option:hover {
+      border-color: var(--purple-mid);
+      background: var(--bg-soft)
+    }
+
+    .delivery-option.selected {
+      border-color: var(--purple);
+      background: var(--purple-light)
+    }
+
+    .delivery-option input[type="radio"] {
+      accent-color: var(--purple);
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0
+    }
+
+    .delivery-option-info {
+      flex: 1
+    }
+
+    .delivery-option-info strong {
+      display: block;
+      font-weight: 600;
+      font-size: .88rem;
+      color: var(--text)
+    }
+
+    .delivery-option-info span {
+      color: var(--text-muted);
+      font-size: .78rem
+    }
+
+    .delivery-option-price {
+      font-weight: 700;
+      color: var(--purple-dark);
+      font-size: .95rem;
+      flex-shrink: 0
+    }
+
+    @media(max-width:900px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 40px
+      }
+
+      .hero-visual {
+        display: none
+      }
+
+      .trust-grid {
+        grid-template-columns: 1fr;
+        gap: 12px
+      }
+
+      .cart-layout {
+        grid-template-columns: 1fr
+      }
+
+      .cart-summary {
+        position: static
+      }
+
+      .contact-layout {
+        grid-template-columns: 1fr;
+        gap: 32px
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr
+      }
+    }
+
+    @media(max-width:640px) {
+      .nav-links {
+        display: none
+      }
+
+      .search-box {
+        display: none
+      }
+
+      .hamburger {
+        display: flex;
+        margin-left: auto
+      }
+
+      .hero {
+        min-height: 80vh;
+        padding: 60px 0
+      }
+
+      .section {
+        padding: 56px 0
+      }
+
+      .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 16px
+      }
+
+      .product-img {
+        height: 170px;
+        font-size: 3rem
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 28px
+      }
+
+      .cart-item {
+        flex-wrap: wrap
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center
+      }
+
+      .wa-float {
+        bottom: 16px;
+        right: 16px
+      }
+
+      .wa-float-label {
+        display: none
+      }
+
+      .modal-panel {
+        max-height: 90vh
+      }
+
+      .modal-body {
+        padding: 20px
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header id="header">
+    <div class="container">
+      <nav class="nav-inner">
+        <a class="logo" href="#" onclick="navigate('home')">
+          <img src="logo.png" alt="Trevo" class="logo-img" />
+        </a>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#" class="active" data-page="home" onclick="navigate('home');return false;">🏠 Home</a></li>
+          <li><a href="#" data-page="products" onclick="navigate('products');return false;">🛍️ Products</a></li>
+          <li><a href="#" data-page="cart" onclick="navigate('cart');return false;">🛒 Cart <span class="cart-badge"
+                id="cartCount">0</span></a></li>
+          <li><a href="#" data-page="contact" onclick="navigate('contact');return false;">📩 Contact</a></li>
+        </ul>
+        <button class="hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M3 12h18M3 6h18M3 18h18" />
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu" onclick="closeMobileMenu(event)">
+    <div class="mobile-menu-panel">
+      <button class="mobile-close" onclick="toggleMobileMenu()">✕ Close</button>
+      <a href="#" data-page="home" onclick="navigate('home');toggleMobileMenu();return false;">🏠 Home</a>
+      <a href="#" data-page="products" onclick="navigate('products');toggleMobileMenu();return false;">🛍️ Products</a>
+      <a href="#" data-page="cart" onclick="navigate('cart');toggleMobileMenu();return false;">🛒 Cart</a>
+      <a href="#" data-page="contact" onclick="navigate('contact');toggleMobileMenu();return false;">📩 Contact</a>
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
+        <div class="products-search" style="max-width:100%;">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.35-4.35" />
+          </svg>
+          <input type="text" placeholder="Search products…" oninput="headerSearchHandler(this.value)" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- HOME -->
+  <div class="page active" id="page-home">
+    <section class="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <div>
+            <div class="hero-badge"><span class="hero-badge-dot"></span>Now Live – Fast WhatsApp Ordering</div>
+            <h1 class="hero-title">Shop Smart.<br />Order <em>Instantly</em><br />via WhatsApp.</h1>
+            <p class="hero-sub">Discover premium products at unbeatable prices. Add to cart and checkout in seconds — no
+              apps, no complicated forms.</p>
+            <div class="hero-ctas">
+              <button class="btn btn-primary btn-lg" onclick="navigate('products')">🛍️ Shop Now</button>
+              <a class="btn btn-outline btn-lg" href="https://wa.me/923007041451" target="_blank">💬 Chat with Us</a>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <div style="position:relative;width:100%;max-width:420px;">
+              <div class="hero-card">
+                <div class="hero-card-img"><img
+                    src="https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_10_2025_09_44_29_PM.png?v=1758648075"
+                    alt="Multifunction Hand Chopper" /></div>
+                <div class="hero-card-body">
+                  <span class="hero-card-tag">⚡ Best Seller</span>
+                  <div class="hero-card-name">Multifunction Hand Chopper</div>
+                  <div><span class="hero-card-price">Rs. 699</span><span class="hero-card-old">Rs. 1,039</span></div>
+                </div>
+              </div>
+              <div class="hero-float hero-float-1"><span class="hero-float-icon">📦</span>
+                <div>
+                  <div style="font-size:.75rem;color:var(--text-muted)">Delivery in</div>
+                  <div>1–3 Business Days</div>
+                </div>
+              </div>
+              <div class="hero-float hero-float-2"><span class="hero-float-icon">💜</span>
+                <div>
+                  <div style="font-size:.75rem;color:var(--text-muted)">Orders Today</div>
+                  <div>127+ Happy Buyers</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="trust-bar">
+      <div class="container">
+        <div class="trust-grid">
+          <div class="trust-item">
+            <div class="trust-icon">🚚</div>
+            <div>
+              <div class="trust-label">Fast Delivery</div>
+              <div class="trust-desc">1–3 business days nationwide</div>
+            </div>
+          </div>
+          <div class="trust-item">
+            <div class="trust-icon">💵</div>
+            <div>
+              <div class="trust-label">Cash on Delivery</div>
+              <div class="trust-desc">Pay when your order arrives</div>
+            </div>
+          </div>
+          <div class="trust-item">
+            <div class="trust-icon">💬</div>
+            <div>
+              <div class="trust-label">WhatsApp Checkout</div>
+              <div class="trust-desc">Order in seconds via WhatsApp</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="background:var(--bg-soft);">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-eyebrow">✦ Curated for You</span>
+          <h2 class="section-title">Featured Products</h2>
+          <p class="section-sub">Handpicked bestsellers loved by our community. Fresh drops, unbeatable prices.</p>
+        </div>
+        <div class="products-grid" id="featuredGrid"></div>
+        <div style="text-align:center;margin-top:40px;"><button class="btn btn-outline btn-lg"
+            onclick="navigate('products')">View All Products →</button></div>
+      </div>
+    </section>
+
+    <section
+      style="background:linear-gradient(135deg,#5C1F6B,#3D1050);padding:72px 0;text-align:center;color:white;position:relative;overflow:hidden;">
+      <div
+        style="position:absolute;inset:0;background:radial-gradient(circle at 20% 50%,rgba(168,85,192,.2),transparent),radial-gradient(circle at 80% 50%,rgba(92,31,107,.3),transparent);">
+      </div>
+      <div class="container" style="position:relative;z-index:1;">
+        <p
+          style="font-size:.85rem;letter-spacing:.14em;text-transform:uppercase;opacity:.65;margin-bottom:12px;font-weight:600;">
+          📲 Skip the hassle</p>
+        <h2
+          style="font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;margin-bottom:16px;line-height:1.2;">
+          Order Instantly via WhatsApp</h2>
+        <p style="opacity:.8;max-width:480px;margin:0 auto 32px;font-size:1rem;line-height:1.7;">No account needed. No
+          payment forms. Just add to cart, click checkout, and we'll confirm your order on WhatsApp in minutes.</p>
+        <button class="btn btn-wa btn-lg" onclick="navigate('products')">🛍️ Start Shopping</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- PRODUCTS -->
+  <div class="page" id="page-products">
+    <div class="products-page-header">
+      <div class="container">
+        <span class="section-eyebrow">✦ Our Collection</span>
+        <h1 class="section-title" style="text-align:left;margin-bottom:0;">All Products</h1>
+        <div class="products-search">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.35-4.35" />
+          </svg>
+          <input type="text" id="productSearch" placeholder="Search products…" oninput="filterProducts()" />
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="container">
+        <div class="category-filter" id="categoryFilter"></div>
+        <div class="products-grid" id="allProductsGrid"></div>
+        <p id="noResults" class="hidden"
+          style="text-align:center;color:var(--text-muted);padding:60px 0;font-size:1.1rem;">No products found. Try a
+          different search or category.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CART -->
+  <div class="page" id="page-cart">
+    <div class="container">
+      <div class="cart-empty" id="cartEmpty">
+        <div class="cart-empty-icon">🛒</div>
+        <h2>Your cart is empty</h2>
+        <p>Looks like you haven't added anything yet.</p>
+        <button class="btn btn-primary btn-lg" onclick="navigate('products')">🛍️ Browse Products</button>
+      </div>
+      <div class="cart-layout" id="cartContent" style="display:none;">
+        <div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+            <h2 style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;">Your Cart</h2>
+            <button class="btn btn-ghost btn-sm" onclick="clearCart()">🗑️ Clear Cart</button>
+          </div>
+          <div class="cart-items" id="cartItems"></div>
+        </div>
+        <div class="cart-summary">
+          <h2>Order Summary</h2>
+          <div class="delivery-options">
+            <label class="delivery-label">🚚 Delivery Method</label>
+            <div class="delivery-option selected" onclick="selectDelivery('standard', this)">
+              <input type="radio" name="deliveryType" value="standard" checked />
+              <div class="delivery-option-info">
+                <strong>Standard Delivery</strong>
+                <span>5–7 working days</span>
+              </div>
+              <div class="delivery-option-price">Rs. 199</div>
+            </div>
+            <div class="delivery-option" onclick="selectDelivery('urgent', this)">
+              <input type="radio" name="deliveryType" value="urgent" />
+              <div class="delivery-option-info">
+                <strong>Urgent Delivery</strong>
+                <span>2–3 working days</span>
+              </div>
+              <div class="delivery-option-price">Rs. 350</div>
+            </div>
+          </div>
+          <div class="summary-row"><span>Subtotal</span><span id="summarySubtotal">Rs. 0</span></div>
+          <div class="summary-row"><span>Delivery</span><span id="summaryDelivery" style="font-weight:600;">Rs.
+              199</span></div>
+          <div class="summary-row total"><span>Total</span><span class="val" id="summaryTotal">Rs. 0</span></div>
+          <div class="summary-btns">
+            <button class="btn btn-wa" onclick="checkoutWhatsApp()">
+              <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+                <path
+                  d="M12 0C5.373 0 0 5.373 0 12c0 2.132.557 4.136 1.528 5.875L0 24l6.337-1.515A11.943 11.943 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.6a9.553 9.553 0 01-4.98-1.397l-.357-.213-3.762.9.93-3.668-.232-.373A9.554 9.554 0 012.4 12C2.4 6.698 6.698 2.4 12 2.4c5.302 0 9.6 4.298 9.6 9.6 0 5.302-4.298 9.6-9.6 9.6z" />
+              </svg>
+              Checkout via WhatsApp
+            </button>
+            <button class="btn btn-ghost" onclick="navigate('products')">← Continue Shopping</button>
+          </div>
+          <p style="text-align:center;color:var(--text-light);font-size:.75rem;margin-top:14px;">Cash on Delivery</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="page" id="page-contact">
+    <div class="container">
+      <div class="contact-layout">
+        <div class="contact-info">
+          <span class="section-eyebrow">✦ Get in Touch</span>
+          <h2>We're Here to Help</h2>
+          <p>Have a question about your order or a product? Reach out any time — we usually reply within minutes on
+            WhatsApp!</p>
+          <div class="contact-tiles">
+            <a href="https://wa.me/923007041451" target="_blank" class="contact-tile"
+              style="text-decoration:none;color:inherit;">
+              <div class="contact-tile-icon">💬</div>
+              <div><strong>WhatsApp</strong><span>+92 300 704 1451 · Chat now</span></div>
+            </a>
+            <div class="contact-tile">
+              <div class="contact-tile-icon">📧</div>
+              <div><strong>Email</strong><span>hello@trevostore.pk</span></div>
+            </div>
+            <div class="contact-tile">
+              <div class="contact-tile-icon">📍</div>
+              <div><strong>Location</strong><span>Lahore, Punjab, Pakistan</span></div>
+            </div>
+            <div class="contact-tile">
+              <div class="contact-tile-icon">⏰</div>
+              <div><strong>Business Hours</strong><span>Mon–Sat · 9 AM – 9 PM</span></div>
+            </div>
+          </div>
+          <div style="margin-top:28px;">
+            <a href="https://wa.me/923007041451" target="_blank" class="btn btn-wa btn-lg">
+              <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+                <path
+                  d="M12 0C5.373 0 0 5.373 0 12c0 2.132.557 4.136 1.528 5.875L0 24l6.337-1.515A11.943 11.943 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.6a9.553 9.553 0 01-4.98-1.397l-.357-.213-3.762.9.93-3.668-.232-.373A9.554 9.554 0 012.4 12C2.4 6.698 6.698 2.4 12 2.4c5.302 0 9.6 4.298 9.6 9.6 0 5.302-4.298 9.6-9.6 9.6z" />
+              </svg>
+              Chat on WhatsApp
+            </a>
+          </div>
+        </div>
+        <div class="contact-form">
+          <h3>Send a Message</h3>
+          <div class="form-group"><label>Your Name</label><input type="text" id="contactName"
+              placeholder="e.g. Ahmed Ali" /></div>
+          <div class="form-group"><label>Email Address</label><input type="email" id="contactEmail"
+              placeholder="you@example.com" /></div>
+          <div class="form-group"><label>Your Message</label><textarea id="contactMsg"
+              placeholder="Tell us how we can help you…"></textarea></div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="submitContact()">Send
+            Message →</button>
+          <div id="contactSuccess" class="form-success hidden">✅ Message sent! We'll get back to you shortly.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="logo" href="#" onclick="navigate('home')">
+            <img src="logo.png" alt="Trevo" class="logo-img" />
+          </a>
+          <p>Shop smart, order instantly. Premium products delivered to your door with the ease of WhatsApp ordering.
+          </p>
+          <div style="margin-top:20px;"><a href="https://wa.me/923007041451" target="_blank" class="footer-wa-btn">💬
+              +92 300 704 1451</a></div>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#" onclick="navigate('home');return false;">Home</a></li>
+            <li><a href="#" onclick="navigate('products');return false;">Products</a></li>
+            <li><a href="#" onclick="navigate('cart');return false;">My Cart</a></li>
+            <li><a href="#" onclick="navigate('contact');return false;">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#" onclick="openModal('howToOrder');return false;">How to Order</a></li>
+            <li><a href="#" onclick="openModal('deliveryInfo');return false;">Delivery Info</a></li>
+            <li><a href="#" onclick="openModal('returnsPolicy');return false;">Returns Policy</a></li>
+            <li><a href="#" onclick="openModal('privacyPolicy');return false;">Privacy Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2025 Trevo. All rights reserved.</span>
+        <span style="color:rgba(255,255,255,.3)">Crafted with 💜 in Pakistan</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="wa-float">
+    <span class="wa-float-label">Chat with us!</span>
+    <a href="https://wa.me/923007041451" target="_blank" class="wa-float-btn" title="Chat on WhatsApp">
+      <svg viewBox="0 0 24 24">
+        <path
+          d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+        <path
+          d="M12 0C5.373 0 0 5.373 0 12c0 2.132.557 4.136 1.528 5.875L0 24l6.337-1.515A11.943 11.943 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.6a9.553 9.553 0 01-4.98-1.397l-.357-.213-3.762.9.93-3.668-.232-.373A9.554 9.554 0 012.4 12C2.4 6.698 6.698 2.4 12 2.4c5.302 0 9.6 4.298 9.6 9.6 0 5.302-4.298 9.6-9.6 9.6z" />
+      </svg>
+    </a>
+  </div>
+
+  <!-- Product Detail Modal -->
+  <div class="modal-overlay" id="modal-productDetail" onclick="closeModalOverlay(event)">
+    <div class="pd-modal-panel">
+      <button class="pd-close-btn" onclick="closeModal('productDetail')">✕</button>
+      <div class="pd-layout">
+        <div class="pd-gallery">
+          <div class="pd-main-img-wrap">
+            <img id="pdMainImg" src="" alt="Product Image" />
+          </div>
+          <div class="pd-thumbs" id="pdThumbs"></div>
+        </div>
+        <div class="pd-info">
+          <div class="pd-info-header">
+            <div id="pdBadge" style="margin-top: 4px;"></div>
+            <div class="pd-category" id="pdCategory"></div>
+            <div class="pd-title" id="pdTitle"></div>
+            <div class="pd-price-row" id="pdPriceRow"></div>
+            <div class="pd-actions" id="pdActions"></div>
+          </div>
+          <hr class="pd-divider">
+          <div class="pd-body" id="pdBody"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODALS -->
+  <!-- How to Order Modal -->
+  <div class="modal-overlay" id="modal-howToOrder" onclick="closeModalOverlay(event)">
+    <div class="modal-panel">
+      <div class="modal-header">
+        <h2>📲 How to Order</h2>
+        <button class="modal-close" onclick="closeModal('howToOrder')">✕</button>
+      </div>
+      <div class="modal-body">
+        <p>Ordering from Trevo is simple and fast! Follow these easy steps to place your order via WhatsApp:</p>
+        <ul class="step-list">
+          <li>
+            <div><strong>Browse Products</strong><br><span style="color:var(--text-muted);font-size:.9rem;">Explore our
+                collection on the Products page. Use the search bar or category filters to find exactly what you
+                need.</span></div>
+          </li>
+          <li>
+            <div><strong>Add to Cart</strong><br><span style="color:var(--text-muted);font-size:.9rem;">Click the "+ Add
+                to Cart" button on any product you'd like to purchase. You can add multiple items.</span></div>
+          </li>
+          <li>
+            <div><strong>Review Your Cart</strong><br><span style="color:var(--text-muted);font-size:.9rem;">Go to the
+                Cart page to review your items. Adjust quantities or remove products as needed.</span></div>
+          </li>
+          <li>
+            <div><strong>Choose Delivery Method</strong><br><span
+                style="color:var(--text-muted);font-size:.9rem;">Select between Standard Delivery (5–7 working days, Rs.
+                199) or Urgent Delivery (2–3 working days, Rs. 350).</span></div>
+          </li>
+          <li>
+            <div><strong>Checkout via WhatsApp</strong><br><span style="color:var(--text-muted);font-size:.9rem;">Click
+                the "Checkout via WhatsApp" button. Your order summary will be sent automatically to our
+                WhatsApp.</span></div>
+          </li>
+          <li>
+            <div><strong>Confirm & Receive</strong><br><span style="color:var(--text-muted);font-size:.9rem;">We'll
+                confirm your order on WhatsApp, share tracking details, and deliver to your doorstep. Pay via Cash on
+                Delivery!</span></div>
+          </li>
+        </ul>
+        <div class="info-card" style="margin-top:20px;">
+          <div class="info-card-icon">💡</div>
+          <div class="info-card-content">
+            <strong>Need Help?</strong>
+            <span>Chat with us directly on WhatsApp at +92 300 704 1451 — we're happy to assist!</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delivery Info Modal -->
+  <div class="modal-overlay" id="modal-deliveryInfo" onclick="closeModalOverlay(event)">
+    <div class="modal-panel">
+      <div class="modal-header">
+        <h2>🚚 Delivery Information</h2>
+        <button class="modal-close" onclick="closeModal('deliveryInfo')">✕</button>
+      </div>
+      <div class="modal-body">
+        <p>We deliver across Pakistan! Here are our shipping options and details:</p>
+
+        <div class="info-card">
+          <div class="info-card-icon">📦</div>
+          <div class="info-card-content">
+            <strong>Standard Delivery — Rs. 199</strong>
+            <span>Shipping within 5–7 working days. Available nationwide across Pakistan.</span>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-card-icon">⚡</div>
+          <div class="info-card-content">
+            <strong>Urgent Delivery — Rs. 350</strong>
+            <span>Fast-tracked shipping within 2–3 working days for when you need it sooner.</span>
+          </div>
+        </div>
+
+        <h3>Delivery Details</h3>
+        <ul>
+          <li>All orders are shipped via trusted courier partners.</li>
+          <li>You will receive tracking information via WhatsApp once your order is dispatched.</li>
+          <li>Delivery times are counted from the date of order confirmation (excluding weekends and public holidays).
+          </li>
+          <li>Standard delivery charges apply to all orders regardless of order value.</li>
+        </ul>
+
+        <h3>Payment Method</h3>
+        <p>We currently only accept <strong>Cash on Delivery (COD)</strong>. You pay when the order reaches your
+          doorstep — simple and secure.</p>
+
+        <div class="info-card">
+          <div class="info-card-icon">📍</div>
+          <div class="info-card-content">
+            <strong>Delivery Coverage</strong>
+            <span>We ship to all major cities and towns across Pakistan including Lahore, Karachi, Islamabad,
+              Rawalpindi, Faisalabad, Multan, and more.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Returns Policy Modal -->
+  <div class="modal-overlay" id="modal-returnsPolicy" onclick="closeModalOverlay(event)">
+    <div class="modal-panel">
+      <div class="modal-header">
+        <h2>🔄 Returns Policy</h2>
+        <button class="modal-close" onclick="closeModal('returnsPolicy')">✕</button>
+      </div>
+      <div class="modal-body">
+        <p>At Trevo, your satisfaction is our priority. We want you to be happy with every purchase.</p>
+
+        <div class="info-card">
+          <div class="info-card-icon">📋</div>
+          <div class="info-card-content">
+            <strong>Return Window</strong>
+            <span>Damaged products can be returned within 5–7 days of delivery.</span>
+          </div>
+        </div>
+
+        <h3>How to Return a Product</h3>
+        <ul class="step-list">
+          <li>
+            <div><strong>Contact Us</strong><br><span style="color:var(--text-muted);font-size:.9rem;">Message us on
+                WhatsApp at +92 300 704 1451 within 5–7 days of receiving your order.</span></div>
+          </li>
+          <li>
+            <div><strong>Share Photos</strong><br><span style="color:var(--text-muted);font-size:.9rem;">Send clear
+                photos of the damaged product along with your order details.</span></div>
+          </li>
+          <li>
+            <div><strong>We'll Arrange Pickup or Replacement</strong><br><span
+                style="color:var(--text-muted);font-size:.9rem;">Once verified, we'll arrange a replacement or refund at
+                no extra cost to you.</span></div>
+          </li>
+        </ul>
+
+        <h3>Conditions</h3>
+        <ul>
+          <li>Returns are only accepted for damaged or defective products.</li>
+          <li>The product must be in its original packaging.</li>
+          <li>Return requests must be made within 5–7 days of delivery.</li>
+          <li>Items that have been used, altered, or washed are not eligible for return.</li>
+        </ul>
+
+        <div class="info-card" style="margin-top:8px;">
+          <div class="info-card-icon">💬</div>
+          <div class="info-card-content">
+            <strong>Questions?</strong>
+            <span>If you have any concerns about your order, don't hesitate to reach out on WhatsApp. We're here to
+              help!</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Privacy Policy Modal -->
+  <div class="modal-overlay" id="modal-privacyPolicy" onclick="closeModalOverlay(event)">
+    <div class="modal-panel">
+      <div class="modal-header">
+        <h2>🔒 Privacy Policy</h2>
+        <button class="modal-close" onclick="closeModal('privacyPolicy')">✕</button>
+      </div>
+      <div class="modal-body">
+        <p>At Trevo, we value your privacy and are committed to protecting your personal information. This policy
+          explains how we collect, use, and safeguard your data.</p>
+
+        <h3>Information We Collect</h3>
+        <ul>
+          <li><strong>Contact Information:</strong> Your name, phone number, and delivery address — shared via WhatsApp
+            when you place an order.</li>
+          <li><strong>Order Details:</strong> Products you purchase, quantities, and payment method.</li>
+          <li><strong>Device Information:</strong> Basic browser data and cookies to improve your shopping experience on
+            our website.</li>
+        </ul>
+
+        <h3>How We Use Your Information</h3>
+        <ul>
+          <li>To process and fulfill your orders.</li>
+          <li>To communicate with you about your purchases, delivery updates, and customer support.</li>
+          <li>To improve our products, website, and overall customer experience.</li>
+          <li>To send you occasional updates about new products or offers (only if you opt in).</li>
+        </ul>
+
+        <h3>Data Protection</h3>
+        <p>We take the security of your data seriously:</p>
+        <ul>
+          <li>We do <strong>not</strong> sell, rent, or share your personal information with third parties for marketing
+            purposes.</li>
+          <li>Your data is only shared with our trusted courier partners for the sole purpose of delivering your orders.
+          </li>
+          <li>We use secure communication channels (WhatsApp end-to-end encryption) for all order-related conversations.
+          </li>
+        </ul>
+
+        <h3>Cookies</h3>
+        <p>Our website uses local storage to save your shopping cart between visits. No tracking cookies or third-party
+          analytics are used.</p>
+
+        <h3>Your Rights</h3>
+        <ul>
+          <li>You can request to view, update, or delete your personal data at any time.</li>
+          <li>Simply contact us on WhatsApp at +92 300 704 1451 and we'll assist you promptly.</li>
+        </ul>
+
+        <div class="info-card" style="margin-top:8px;">
+          <div class="info-card-icon">📧</div>
+          <div class="info-card-content">
+            <strong>Contact Us</strong>
+            <span>For any privacy-related concerns, reach out via WhatsApp at +92 300 704 1451 or email at
+              hello@trevostore.pk</span>
+          </div>
+        </div>
+
+        <p style="margin-top:16px;font-size:.82rem;color:var(--text-light);">Last updated: April 2025</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+
+  <script>
+    const PRODUCTS = [
+      {
+        id: 1, name: 'Non-Slip Textured Table Protector Sheet', category: 'Home Essentials', price: 249, oldPrice: 379, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-12-01at5.46.13PM_1.jpg?v=1764598275', desc: 'Waterproof, oilproof & heat-resistant surface cover / drawer liner.', badge: 'sale', featured: true, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-12-01at5.46.13PM_1.jpg?v=1764598275', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-12-01at5.46.13PM_2.jpg?v=1764598275', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-12-01at5.46.13PM_3.jpg?v=1764598275', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-12-01at5.46.13PM.jpg?v=1764598275', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-12-01at5.46.14PM_1.jpg?v=1764598275', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-12-01at5.46.14PM.jpg?v=1764598275', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-12-01at5.46.15PM_1.jpg?v=1764598275', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-12-01at5.46.15PM_2.jpg?v=1764598275', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-12-01at5.46.15PM.jpg?v=1764598275', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-12-01at5.46.16PM_1.jpg?v=1764598275', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-12-01at5.46.16PM.jpg?v=1764598275', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-12-01at5.47.51PM_1.jpg?v=1764598275'], bodyHtml: `<p>Waterproof, Oilproof &amp; Heat-Resistant Surface Cover / Drawer Liner<br></p>
+<p>Protect your furniture with style using our <strong>Non-Slip Textured Table Protector Sheet</strong>, designed to keep your surfaces clean, safe, and scratch-free. Made with high-quality waterproof material, this multipurpose sheet is perfect for <strong>tables, kitchen shelves, drawers, cabinets, countertops, and dining areas</strong>.</p>
+<p>The elegant textured pattern not only enhances grip but also adds a premium look to your home. Easy to cut, install, and clean — making it a must-have for every household.</p>
+<h3><strong>Key Features</strong></h3>
+<ul>
+<li>
+<p>✔️ <strong>Non-slip textured design</strong> for extra grip</p>
+</li>
+<li>
+<p>✔️ <strong>Waterproof, oilproof &amp; stain-resistant</strong></p>
+</li>
+<li>
+<p>✔️ <strong>Heat-resistant material</strong> protects your table</p>
+</li>
+<li>
+<p>✔️ Ideal for <strong>kitchen shelves, drawers, fridge racks, tables &amp; cabinets</strong></p>
+</li>
+<li>
+<p>✔️ <strong>Easy to cut &amp; install</strong> according to size</p>
+</li>
+<li>
+<p>✔️ Durable and reusable material</p>
+</li>
+</ul>
+<h3><strong>Why You’ll Love It</strong></h3>
+<p>This sheet keeps your furniture new-looking while offering long-lasting protection against spills, scratches, and daily wear. Perfect for organizing spaces while improving overall aesthetics.<br></p>
+<h3><strong>Package include: 1 Roll</strong></h3>` },
+      {
+        id: 2, name: 'Leaf Shaped Serving Bowl', category: 'Kitchen', price: 129, oldPrice: 249, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-11-30at9.33.15PM.jpg?v=1764597854', desc: 'Lightweight & stylish tableware for snacks, salads & sauces. Pack of 2.', badge: 'sale', featured: true, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-11-30at9.33.15PM.jpg?v=1764597854', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageDec1_2025_06_30_53PM.png?v=1764597854', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageDec1_2025_06_49_52PM.png?v=1764597854', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-11-30at9.32.56PM.jpg?v=1764597854', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-12-01at9.41.21AM.jpg?v=1764597058'], bodyHtml: `<p>Lightweight, Durable &amp; Stylish Tableware for Snacks, Salads, Sauces<br>Bring natural elegance to your dining table with this <strong>Leaf Shaped Serving Bowl</strong>, designed to add a fresh and modern touch to your kitchen. Made from durable, lightweight, and eco-friendly material, this bowl is perfect for serving <strong>snacks, fruits, sauces, dips, dry items, and small side dishes</strong>.</p>
+<p>The smooth matte finish and realistic leaf pattern make it a beautiful addition to any home décor setting. Ideal for daily use, picnics, parties, and gift hampers.</p>
+<h3><strong>Key Features</strong></h3>
+<ul>
+<li>
+<p>🌿 <strong>Eco-friendly &amp; BPA-free material</strong></p>
+</li>
+<li>
+<p>🍃 <strong>Unique leaf design</strong> adds a stylish nature-inspired touch</p>
+</li>
+<li>
+<p>🥗 Perfect for <strong>snacks, sauces, dips, salads &amp; sides</strong></p>
+</li>
+<li>
+<p>💧 Easy to clean and maintain</p>
+</li>
+<li>
+<p>🏠 Suitable for kitchen, dining table, and serving guests</p>
+</li>
+<li>
+<p>🎁 Great for gifting or home décor use</p>
+</li>
+</ul>
+<h3><strong>Why You’ll Love It</strong></h3>
+<p>This serving bowl is not only visually appealing but also practical, durable, and versatile — making it an essential addition to your tableware collection.<br><br></p>
+<h3><strong>Package Include: 2 * Serving Bowls</strong></h3>
+<p> </p>` },
+      {
+        id: 3, name: 'Stainless Steel Multi-Slot Organizer Rack', category: 'Kitchen', price: 249, oldPrice: 379, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-11-30at4.37.36PM_1.jpg?v=1764506585', desc: 'Plate, lid & cutting board holder. Rust-free durable design.', badge: 'new', featured: true, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-11-30at4.37.36PM_1.jpg?v=1764506585', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-11-30at4.37.36PM.jpg?v=1772951491'], bodyHtml: `<p><span>Keep your kitchen clean and organized with this </span><b><span>Stainless Steel Multi-Slot Organizer Rack</span></b><span>. Designed with multiple evenly spaced slots, it securely holds </span><b><span>plates, pot lids, baking trays, cutting boards, and chopping boards</span></b><span> in an upright position.</span><span></span></p>
+<p><span>Its strong stainless steel structure ensures </span><b><span>rust-free durability</span></b><span>, while the open-frame design allows for </span><b><span>quick drying and easy cleaning</span></b><span>. Perfect for kitchen shelves, countertops, and inside cabinets.</span><span></span></p>
+<p><b><span>Features:</span></b><span><br></span><span><span>• Durable Stainless Steel Build</span></span><span><br></span><span><span>• Multiple Slots for Organized Storage</span></span><span><br></span><span><span>• Perfect for Plates, Lids, Trays &amp; Cutting Boards</span></span><span><br></span><span><span>• Rust-Resistant &amp; Easy to Clean</span></span><span><br></span><span><span>• Space-Saving Design for Cabinets &amp; Countertops</span></span><span></span></p>
+<p><b><span>Package Includes:</span></b><span><br></span><span><span>• 1 × Stainless Steel Organizer Rack</span></span><span></span></p>` },
+      {
+        id: 4, name: 'USB Rechargeable Electric Lighter', category: 'Home Essentials', price: 499, oldPrice: 749, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/20251130_1626_USBLighterCharging_remix_01kba85k7he9c8rsqsj979dmvc.png?v=1764506413', desc: 'Flexible neck, windproof & flameless. No gas refills needed.', badge: 'hot', featured: true, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/20251130_1626_USBLighterCharging_remix_01kba85k7he9c8rsqsj979dmvc.png?v=1764506413', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/20251130_1626_USBLighterDemo_remix_01kba84gn1ep4rzbhc7eq7sjt5.png?v=1764506413', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/20251130_1623_ElectricLighterDisplay_remix_01kba80f9ef4ztz674smrn3w7k.png?v=1764506413', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/20251130_1623_ElectricLighterDisplay_remix_01kba80f9gf7w8pvbq6r0a7h1e.png?v=1764506413'], bodyHtml: `<p><span>Light your stove safely and comfortably with this </span><b><span>USB Rechargeable Electric Lighter</span></b><span>. Designed with a </span><b><span>flexible 360° bendable neck</span></b><span>, it lets you ignite gas burners without bringing your hands close to the flame. Perfect for gas stoves, candles, BBQ grills, and outdoor use.</span><span></span></p>
+<p><span>This lighter uses </span><b><span>flameless plasma arc technology</span></b><span>, making it completely </span><b><span>windproof</span></b><span>, eco-friendly, and safer than traditional gas lighters. Just plug it into any USB port to recharge — no gas refills needed.</span><span></span></p>
+<p><b><span>Features:</span></b><span><br></span><span><span>• USB Rechargeable – long-lasting battery</span></span><span><br></span><span><span>• Windproof &amp; Flameless Technology</span></span><span><br></span><span><span>• Flexible 360° Neck for easy reach</span></span><span><br></span><span><span>• Safe, secure ignition</span></span><span><br></span><span><span>• Ideal for stoves, candles, BBQ, grills, and camping</span></span><span></span></p>
+<p><b><span>Package Includes:</span></b><span><br></span><span><span>• 1 × USB Rechargeable Lighter</span></span><span><br></span><span><span>• 1 × Charging Cable</span></span><span></span></p>
+<p><span> </span></p>` },
+      {
+        id: 5, name: 'Rechargeable Mini Heat Sealer', category: 'Kitchen', price: 499, oldPrice: 879, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-11-30at4.39.41PM.jpg?v=1764506031', desc: 'Portable bag resealer with USB charging. Keep food fresh.', badge: 'sale', featured: true, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-11-30at4.39.41PM.jpg?v=1764506031', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Nov_22_2025_02_58_25_PM.png?v=1764506075', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Nov_21_2025_04_45_04_PM.png?v=1764506076', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-11-30at4.39.41PM_1.jpg?v=1764506031', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Nov_22_2025_02_09_31_PM.png?v=1764506074', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Nov_22_2025_02_16_47_PM.png?v=1764506076'], bodyHtml: `<p><span>Keep your snacks, spices, and dried foods fresh with this </span><b><span>Rechargeable Mini Heat Sealer</span></b><span>. It instantly reseals plastic bags with a strong, airtight seal—perfect for sealing chips, dried fruits, spices, lentils, and freezer bags.</span><span></span></p>
+<p><span>The compact, handheld design makes it super easy to use: just press, slide, and seal. With </span><b><span>USB rechargeable convenience</span></b><span>, you don’t need batteries—simply charge it and it’s ready whenever you need it.</span><span></span></p>
+<p><span>Ideal for kitchen storage, travel, home organization, and small business packaging.</span><span></span></p>
+<p><b><span>Features:</span></b><span><br></span><span><span>• Rechargeable Mini Heat Sealer (USB Charging)</span></span><span><br></span><span><span>• Creates an airtight, leak-proof seal in seconds</span></span><span><br></span><span><span>• Perfect for snacks, spices, dried foods &amp; leftovers</span></span><span><br></span><span><span>• Portable, lightweight &amp; easy to store</span></span><span><br></span><span><span>• Safe heating plate with superior sealing strength</span></span><span></span></p>
+<p><b><span>Package Includes:</span></b><span><br></span><span><span>• 1 × Rechargeable Mini Heat Sealer</span></span><span><br></span><span><span>• 1 × USB Charging Cable</span></span><span></span></p>` },
+      {
+        id: 6, name: 'Dish Washing Organizer Set', category: 'Kitchen', price: 599, oldPrice: 1099, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/20251130_1714_DishwashingOrganizerSet_remix_01kbaax8fyeecsyn0za9ejm2kq.png?v=1764505853', desc: 'Large capacity sink caddy with pump ring holder.', badge: 'sale', featured: true, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/20251130_1714_DishwashingOrganizerSet_remix_01kbaax8fyeecsyn0za9ejm2kq.png?v=1764505853', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/20251130_1714_DishwashingOrganizerShowcase_remix_01kbaay3qafbdszhvzb8kxe557.png?v=1764505853', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-10-25at3.21.12PM_1.jpg?v=1762772824', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-10-25at3.20.19PM_1.jpg?v=1762772824', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-10-25at3.20.18PM.jpg?v=1762772824'], bodyHtml: `<p><span>Large Capacity Sink Caddy with Pump Ring Holder</span></p>
+<p><span>Keep your sink area neat, clean, and fully organized with this </span><b><span>Dish Washing Organizer Set</span></b><span>. Designed with </span><b><span>three large-capacity compartments</span></b><span>, it easily holds dishwashing liquid, sponges, brushes, scrubbers, and other cleaning essentials.</span><span></span></p>
+<p><span>The center features a </span><b><span>pump-style ring holder</span></b><span> with a transparent lid—perfect for storing liquid soap, making refilling easy and mess-free. The wide, deep compartments prevent items from slipping out and help maintain a tidy kitchen counter.</span><span></span></p>
+<p><span>Made from durable, easy-to-clean plastic, this sink caddy is ideal for everyday use in kitchens, bathrooms, and utility areas.</span><span></span></p>
+<p><b><span>Features:</span></b><span><br></span><span><span>• 3 Large Compartments for sponges, brushes &amp; cleaning tools</span></span><span><br></span><span><span>• Pump Ring Holder with transparent lid for dishwashing liquid</span></span><span><br></span><span><span>• Deep and wide container design for large storage volume</span></span><span><br></span><span><span>• Keeps sink area neat, clean &amp; organized</span></span><span><br></span><span><span>• Durable, waterproof &amp; easy to wash</span></span><span><br></span><span><span>• Suitable for kitchen sink, bathroom sink &amp; utility counters</span></span><span></span></p>
+<p><b><span>Package Includes:</span></b><span><br></span><span><span>• 1 × Dish Washing Organizer Set (with pump ring holder)</span></span><span></span></p>` },
+      {
+        id: 7, name: 'Adjustable Drawer Partition Dividers', category: 'Storage', price: 249, oldPrice: 389, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/20251130_1659_OrganizedDrawerDividers_remix_01kbaa0ey7ecfvtfbcatdv2y56.png?v=1764505606', desc: '4-in-1 pack. Create custom-sized sections in any drawer.', badge: 'new', featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/20251130_1659_OrganizedDrawerDividers_remix_01kbaa0ey7ecfvtfbcatdv2y56.png?v=1764505606', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/20251130_1700_Pink_Dividers_on_Table_remix_01kbaa3n8jfe786tyb7tscft1h.png?v=1764506894', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/20251130_1703_PinkDrawerDividersLayout_remix_01kbaa85dafchb9s2b9351yg84.png?v=1764506894', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/20251130_1700_DrawerOrganizationTransformation_remix_01kbaa2ag0ex6s50qqb18vfc5t.png?v=1764506894', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/20251130_1657_PinkDividerStrips_remix_01kba9ye7weddbehdkz3rctqfb.png?v=1764506894', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/20251130_1657_PinkDrawerDividers_remix_01kba9xnkdf3r83vw4c7bbbxzv.png?v=1764506894'], bodyHtml: `<p><strong>Multi-Section Organizer for Home &amp; Kitchen<br></strong><span>Keep every drawer neat and perfectly organized with these </span><b><span>Adjustable Drawer Partition Dividers</span></b><span>. Each strip features flexible notches that easily interlock, allowing you to create </span><b><span>custom-sized sections</span></b><span> in any drawer. Perfect for organizing makeup, jewelry, baby items, socks, undergarments, office supplies, kitchen tools, and more.</span><span></span></p>
+<p><span>Made from high-quality, durable plastic, these dividers fit smoothly inside drawers without scratching. You can </span><b><span>expand, shorten, or rearrange</span></b><span> them anytime to match your storage needs.</span><span></span></p>
+<p><span>Ideal for home, office, dressing table, kitchen cabinets, vanity drawers, and kids’ storage spaces.</span><span></span></p>
+<p><b><span>Features:</span></b><span><br></span><span><span>• Adjustable &amp; customizable divider strips</span></span><span><br></span><span><span>• Create multiple sections in any drawer</span></span><span><br></span><span><span>• Perfect for makeup, jewelry, socks, stationery &amp; accessories</span></span><span><br></span><span><span>• Strong, durable plastic</span></span><span><br></span><span><span>• Smooth edges – safe for all drawers</span></span><span><br></span><span><span>• Easy to install, remove &amp; rearrange</span></span><span></span></p>
+<p><b><span>Package Includes:</span></b><span><br></span><span><span>• </span></span><span>Four </span><span>Adjustable Divider Strips</span><span></span></p>` },
+      {
+        id: 8, name: 'Premium Foldable Metal Basket – Golden Finish', category: 'Home Essentials', price: 1199, oldPrice: 2099, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Nov_22_2025_04_13_28_PM.png?v=1764442540', desc: 'Elegant golden steel basket for kitchen & home storage.', badge: 'hot', featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Nov_22_2025_04_13_28_PM.png?v=1764442540', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Nov_22_2025_04_24_01_PM.png?v=1764442542', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Nov_22_2025_04_20_11_PM.png?v=1764442538', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Nov_22_2025_04_25_47_PM.png?v=1764442539', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Nov_22_2025_04_17_23_PM.png?v=1764442543', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Nov_22_2025_04_29_18_PM.png?v=1764442541', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Nov_22_2025_04_25_29_PM.png?v=1764442544'], bodyHtml: `<p>Add luxury and organization to your home with our <strong>Foldable Golden Steel Basket</strong>, designed to store your essentials with style. Made from <strong>high-quality stainless steel</strong> and finished in a <strong>beautiful golden coating</strong>, this basket is both <strong>durable and elegant</strong>.</p>
+<p>The <strong>foldable design</strong> allows you to expand or collapse the basket within seconds, making it perfect for <strong>saving space</strong> when not in use. Lightweight yet sturdy, it is ideal for <strong>kitchens, bathrooms, dressing tables, offices, pantries, and dining areas</strong>.</p>
+<p>Use it for <strong>fruits, vegetables, snacks, napkins, cosmetics, towels, cutlery, table items, or daily essentials</strong>. Its stylish golden look instantly enhances any space.<br></p>
+<h2><strong>Key Features</strong></h2>
+<ul>
+<li>
+<p><strong>Premium Golden Finish</strong> adds elegance to any room</p>
+</li>
+<li>
+<p><strong>Foldable Design</strong> – easy to open, close &amp; store</p>
+</li>
+<li>
+<p><strong>Durable Stainless Steel Body</strong></p>
+</li>
+<li>
+<p><strong>Multi-purpose Storage</strong> for kitchen, dressing, office, bathroom &amp; more</p>
+</li>
+<li>
+<p><strong>Ventilated Steel Structure</strong> keeps contents fresh and dry</p>
+</li>
+<li>
+<p><strong>Lightweight &amp; Space-Saving</strong></p>
+</li>
+<li>
+<p><strong>Easy to Clean and Long-lasting</strong><strong></strong><strong></strong></p>
+<h2><strong>Perfect For</strong></h2>
+<ul>
+<li>
+<p>Fruit basket</p>
+</li>
+<li>
+<p>Vegetable storage</p>
+</li>
+<li>
+<p>Snack organizer</p>
+</li>
+<li>
+<p>Bathroom accessories</p>
+</li>
+<li>
+<p>Dressing table items</p>
+</li>
+<li>
+<p>Cutlery &amp; napkin holder</p>
+</li>
+<li>
+<p>Countertop display</p>
+</li>
+<li>
+<p>Gift hampers</p>
+</li>
+</ul>
+</li>
+</ul>` },
+      {
+        id: 9, name: 'Vintage Metal Tray – 3 Bowl Serving Organizer', category: 'Kitchen', price: 1999, oldPrice: 2599, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Nov_29_2025_10_39_47_PM.png?v=1764438014', desc: 'Condiment & serving organizer. Available in Cycle & Trolley shapes.', badge: 'new', featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Nov_29_2025_10_39_47_PM.png?v=1764438014', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Nov_29_2025_10_37_23_PM.png?v=1764438014', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageNov20_2025_11_27_58PM.png?v=1764437995', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageNov20_2025_11_32_05PM.png?v=1764437995', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageNov20_2025_11_35_18PM.png?v=1764437995'], bodyHtml: `<p>Choose your favorite style — <strong>Cycle</strong> or <strong>Trolley</strong>!<br>Both elegant serving trays come with <strong>three vibrant bowls</strong> and are perfect for serving <strong>sauces, dips, pickles, snacks, spices, and tea-time items</strong>. Made with a premium metal frame, they add style and convenience to any dining setup.</p>
+<p>Perfect for home use, restaurants, buffets, and gifting.<br></p>
+<h1><strong>Key Features (Cycle + Trolley Tray Variants)</strong></h1>
+<ul>
+<li>
+<p><strong>2 Attractive Shapes Available</strong>: Cycle &amp; Trolley</p>
+</li>
+<li>
+<p><strong>3 Multi-Use Bowls</strong> to serve sauces, pickles, snacks, spices, dips &amp; more</p>
+</li>
+<li>
+<p><strong>Durable Metal Construction</strong> for long-lasting performance</p>
+</li>
+<li>
+<p><strong>Modern &amp; Decorative Design</strong> suitable for table display</p>
+</li>
+<li>
+<p><strong>Easy to Clean, Easy to Carry</strong></p>
+</li>
+<li>
+<p><strong>Perfect for Home, Cafés, Restaurants, Tea-Time &amp; Parties</strong></p>
+</li>
+<li>
+<p><strong>Ideal for Gifting, Hampers &amp; Home Decoration</strong></p>
+</li>
+</ul>` },
+      {
+        id: 10, name: 'Trevo Sink Splash Guard', category: 'Kitchen', price: 1099, oldPrice: 1499, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageNov18_2025_09_58_09PM.png?v=1764437410', desc: 'Keep your kitchen dry & mess-free. Flexible & easy to install.', badge: 'new', featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageNov18_2025_09_58_09PM.png?v=1764437410', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageNov18_2025_10_25_01PM.png?v=1764437410', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageNov18_2025_10_32_57PM.png?v=1764437410', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageNov18_2025_10_37_51PM.png?v=1764437410', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageNov18_2025_10_42_14PM.png?v=1764437410', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageNov18_2025_10_46_49PM.png?v=1764437410', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageNov18_2025_10_46_54PM.png?v=1764437410'], bodyHtml: `<p><strong>Keep Your Kitchen Dry &amp; Mess-Free!<br></strong>Say goodbye to water splashes, messy countertops, and constant wiping!<br>Trevo’s Premium Sink Splash Guard is designed to give you a clean, hygienic, and stress-free washing experience. Whether you are washing dishes, fruits, vegetables, or letting kids wash their hands—this splash guard keeps everything neat and controlled.<br></p>
+<h2><strong>Key Features</strong></h2>
+<p><strong>🚫 No More Water Mess</strong><br>Blocks water splashes instantly, keeping countertops dry and clean.</p>
+<p><strong>🧽 Multipurpose Use</strong><br>Perfect for dishwashing, washing fruits, baby bottles, utensils, or during kids’ hand washing.</p>
+<p><strong>💪 Strong &amp; Durable Material</strong><br>High-quality soft rubber + anti-slip design ensures long-lasting performance.</p>
+<p><strong>🧲 Flexible &amp; Easy to Install</strong><br>Fits almost all sinks. Just place, adjust, and use—no tools required!</p>
+<p><strong>💚 Hygienic &amp; Safe</strong><br>Prevents bacteria spread by keeping water contained inside the sink.</p>
+<p><strong>🧼 Easy to Clean</strong><br>Simply rinse with water or wipe with a cloth. Dries quickly.</p>
+<h2><strong>Product Specifications</strong></h2>
+<ul>
+<li>
+<p><strong>Material:</strong> Soft Silicone / Flexible Rubber</p>
+</li>
+<li>
+<p><strong>Design:</strong> Foldable, Anti-Splash, Anti-Slip</p>
+</li>
+<li>
+<p><strong>Use Case:</strong> Kitchen Sinks, Bathroom Sinks, Basin Areas</p>
+</li>
+<li>
+<p><strong>Available Colors:</strong> Light Green (Trevo Collection)</p>
+</li>
+<li>
+<p><strong>Size:</strong> Standard – Fits most sink edge</p>
+</li>
+</ul>
+<p><strong><br></strong></p>` },
+      {
+        id: 11, name: 'Self-Adhesive Wall Hook (Pack of 2)', category: 'Home Essentials', price: 169, oldPrice: 289, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageOct10_2025_04_29_57PM.png?v=1761223778', desc: 'No drills, no damage. Holds up to 10 kg. Waterproof & rust-proof.', badge: 'sale', featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageOct10_2025_04_29_57PM.png?v=1761223778', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageOct10_2025_04_37_47PM.png?v=1761223779', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageOct10_2025_04_54_27PM.png?v=1761223779', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageOct10_2025_04_56_16PM.png?v=1761223779', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageOct10_2025_05_21_21PM.png?v=1761223779', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageOct10_2025_05_23_23PM.png?v=1761223779'], bodyHtml: `<p>No drills, no damage — just stick, hang, and enjoy!<br>The <strong>Trevo Transparent Wall Hook</strong> is your go-to home essential for effortless hanging and clean aesthetics. Designed with a <strong>strong adhesive pad</strong> and <strong>stainless steel hook</strong>, it holds up to <strong>10 kg</strong> of weight on any smooth surface — walls, doors, tiles, or glass.</p>
+<p>Perfect for hanging kitchen tools, bags, towels, keys, or even your favorite hanger — all without leaving marks or residue.</p>
+<p>✨ <strong>Key Features:</strong></p>
+<ul>
+<li>
+<p>🪝 <strong>Heavy-Duty Grip:</strong> Securely holds up to 10 kg.</p>
+</li>
+<li>
+<p>💧 <strong>Waterproof &amp; Rust-Proof:</strong> Ideal for bathrooms and kitchens.</p>
+</li>
+<li>
+<p>🔁 <strong>Reusable Design:</strong> Easy to remove and reapply without damage.</p>
+</li>
+<li>
+<p>🧱 <strong>Drill-Free Installation:</strong> Just peel, stick, and use.</p>
+</li>
+<li>
+<p>👁 <strong>Invisible Look:</strong> Transparent base blends seamlessly with any décor.</p>
+</li>
+</ul>` },
+      {
+        id: 12, name: 'Trevo Multi-Slot Hanger (Pack of 2)', category: 'Storage', price: 199, oldPrice: 349, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Oct_17_2025_06_01_37_PM.png?v=1764444940', desc: 'Save up to 80% closet space. 360° rotating hook.', badge: 'sale', featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Oct_17_2025_06_01_37_PM.png?v=1764444940', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Oct_18_2025_07_23_26_PM.png?v=1764444940', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/Hanger.jpg?v=1764444940', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/HangerMeasurement.jpg?v=1764444940'], bodyHtml: `<p>Running out of closet space? Not anymore!<br>Meet the <strong>Trevo Multi-Slot Hanger</strong>, your smart solution for organizing clothes neatly while saving up to <strong>80% of closet space</strong>.</p>
+<p>This durable and lightweight hanger features <strong>multiple slots</strong> that let you hang several garments vertically or horizontally — perfect for shirts, trousers, scarves, dupattas, and more.</p>
+<p>Say goodbye to messy wardrobes and tangled hangers — enjoy a clean, organized, and stylish closet every day.</p>
+<p>✨ <strong>Key Features:</strong></p>
+<ul>
+<li>
+<p>🧥 <strong>Space Saver Design:</strong> Store up to 5 garments on a single hanger.</p>
+</li>
+<li>
+<p>💪 <strong>Durable &amp; Strong:</strong> Made from high-quality, thick plastic that won’t bend or break.</p>
+</li>
+<li>
+<p>🔄 <strong>360° Rotating Hook:</strong> Use vertically or horizontally as per your space.</p>
+</li>
+<li>
+<p>👚 <strong>Neat &amp; Tidy Wardrobe:</strong> Keeps clothes wrinkle-free and well arranged.</p>
+</li>
+<li>
+<p>🌈 <strong>Minimal, Modern Look:</strong> Blends perfectly with any closet style.</p>
+</li>
+</ul>
+<hr>
+<h3>💡 <strong>Why You’ll Love It:</strong>
+</h3>
+<p>Whether you’re organizing seasonal clothes or sharing a closet, the <strong>Trevo Multi-Slot Hanger</strong> makes storage effortless.<br><strong>Smart. Stylish. Effortless. – That’s TrevoPK.</strong></p>` },
+      {
+        id: 13, name: 'Trevo Stove Burner Covers (Pack of 2)', category: 'Kitchen', price: 99, oldPrice: 129, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Oct_10_2025_06_03_00_PM.png?v=1761222981', desc: 'Non-stick, reusable gas stove protectors. Heat resistant.', badge: null, featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Oct_10_2025_06_03_00_PM.png?v=1761222981', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Oct_11_2025_11_17_23_AM.png?v=1761218069'], bodyHtml: `<p>Keep your kitchen spotless with <strong>Trevo Stove Burner Covers</strong> — – Non-Stick, Reusable Gas Stove Protectors, the perfect solution to prevent messy spills and oil stains! Made from <strong>high-quality, heat-resistant aluminum</strong>, these covers fit perfectly around your gas burner to catch drips, food spills, and grease splatters before they burn on your stovetop.</p>
+<p>💧 <strong>Key Features:</strong></p>
+<ul>
+<li>
+<p>✅ <strong>Non-Stick &amp; Easy to Clean:</strong> Simply wipe clean or replace — no scrubbing required!</p>
+</li>
+<li>
+<p>🔥 <strong>Heat Resistant &amp; Safe:</strong> Designed to withstand high cooking temperatures without warping or melting.</p>
+</li>
+<li>
+<p>🍳 <strong>Perfect Fit for All Gas Stoves:</strong> Adjustable inner ring fits most burner sizes easily.</p>
+</li>
+<li>
+<p>🌿 <strong>Reusable &amp; Eco-Friendly:</strong> Durable material allows for multiple uses — save money and reduce waste.</p>
+</li>
+<li>
+<p>✨ <strong>Keeps Kitchen Sparkling:</strong> Protects your stove surface from stubborn stains and burnt residue.<br><br><br></p>
+</li>
+</ul>` },
+      {
+        id: 14, name: 'Silicone Pot Holders', category: 'Kitchen', price: 299, oldPrice: 449, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep8_2025_05_16_52PM.png?v=1759228290', desc: 'Heat-resistant silicone mitts for safe grip on hot cookware.', badge: 'sale', featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep8_2025_05_16_52PM.png?v=1759228290', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_8_2025_05_34_18_PM.png?v=1759228383', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_30_2025_03_33_49_PM.png?v=1759228822', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_30_2025_03_45_32_PM.png?v=1759229208'], bodyHtml: `<p>Upgrade your kitchen with these premium <strong>silicone potholders</strong>, designed to give you maximum safety, grip, and control while handling hot cookware. Made from <strong>high-quality, food-grade silicone</strong>, these heat-resistant mitts protect your hands from burns and slips when lifting hot pots, pans, trays, or baking dishes.</p>
+<p>✅ <strong>Heat Resistant &amp; Safe:</strong> Withstand high temperatures, keeping your hands safe from hot cookware and oven surfaces.<br>✅ <strong>Non-Slip Grip:</strong> Textured inner surface ensures a secure hold, preventing accidental drops and spills.<br>✅ <strong>Flexible &amp; Comfortable:</strong> Soft silicone construction allows easy movement and perfect grip without bulkiness.<br>✅ <strong>Easy to Clean:</strong> Simply rinse or toss them in the dishwasher — no fabric stains or odors.<br>✅ <strong>Compact &amp; Space-Saving:</strong> Lightweight and easy to store in any kitchen drawer or hang on a hook.</p>
+<p>Perfect for <strong>cooking, baking, grilling, or serving</strong>, these potholders are a must-have kitchen essential that combines safety, style, and practicality.</p>` },
+      {
+        id: 15, name: 'Silicone Lid Covers (1-Pack)', category: 'Kitchen', price: 299, oldPrice: 449, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep30_2025_02_45_09PM.png?v=1759226949', desc: 'Airtight, heat-resistant seal. Stretches to fit any container.', badge: 'new', featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep30_2025_02_45_09PM.png?v=1759226949', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep30_2025_02_51_03PM.png?v=1759226949', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_30_2025_03_08_42_PM.png?v=1759226966'], bodyHtml: `<p>Keep your kitchen fresh, clean, and spill-free with <strong>TREVO Silicone Stretch Lid Covers</strong> — the ultimate solution to sealing bowls, pots, jars, and containers of all shapes and sizes. Made from <strong>high-quality, food-grade silicone</strong>, these flexible lids create an <strong>airtight, heat-resistant seal</strong> that locks in freshness, prevents leaks, and keeps your food safe longer.</p>
+<p>Whether you’re storing leftovers, reheating meals, or carrying food on the go, these reusable covers <strong>expand and stretch</strong> for a snug fit without slipping off. They are also <strong>microwave-safe, dishwasher-safe, and freezer-friendly</strong>, making them a must-have sustainable alternative to plastic wraps and foils.<br><br><strong>✨ Key Features</strong></p>
+<ul>
+<li style="text-align: left;">🔥 <strong>Heat Resistant:</strong> Safe for microwaves and hot surfaces.</li>
+<li>💧 <strong>Spill &amp; Splash Proof:</strong> Secure airtight seal prevents messy leaks.</li>
+<li>🌱 <strong>Reusable &amp; Eco-Friendly:</strong> Durable silicone design reduces waste.</li>
+<li>📦 <strong>Universal Fit:</strong> Stretches to cover pots, bowls, jars, fruits, and more.</li>
+<li style="text-align: left;">🧼 <strong>Easy to Clean:</strong> Dishwasher-safe for effortless reuse.</li>
+</ul>` },
+      {
+        id: 16, name: 'Fridge Hanging Basket', category: 'Storage', price: 299, oldPrice: 429, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep30_2025_01_23_01PM.png?v=1759220730', desc: 'Maximize your fridge space. Easy to install on shelves.', badge: 'new', featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep30_2025_01_23_01PM.png?v=1759220730', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_30_2025_02_32_53_PM.png?v=1759224788', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_30_2025_02_48_26_PM.png?v=1759225747', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_30_2025_03_00_32_PM.png?v=1759226508', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/FridgeBasket.jpg?v=1763654116', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/tokri.jpg?v=1763654116'], bodyHtml: `<p><strong>Fridge Hanging Basket – Maximize Your Fridge Space</strong></p>
+<p>Keep your refrigerator neat, tidy, and spacious with our <strong>Fridge Hanging Basket</strong>. Designed to hang effortlessly on fridge shelves, this basket creates extra storage space for fruits, vegetables, snacks, and other essentials. No more cluttered shelves or wasted space—organize your fridge like a pro!</p>
+<p>✅ <strong>Space-Saving Design</strong> – Expands your fridge’s storage capacity.<br>✅ <strong>Easy to Install</strong> – Simply slide and hang on existing shelves.<br>✅ <strong>Durable &amp; Lightweight</strong> – Made with high-quality food-grade plastic.<br>✅ <strong>Multi-Purpose Use</strong> – Perfect for fruits, veggies, cheese, or small packs.<br>✅ <strong>Keeps Food Organized</strong> – Say goodbye to messy and overcrowded shelves.</p>
+<p>A smart solution for modern kitchens—<strong>maximize space, keep food fresh, and enjoy a clutter-free fridge</strong>.</p>` },
+      {
+        id: 17, name: 'Disposable Drain Cover', category: 'Home Essentials', price: 199, oldPrice: 329, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/1_1_8f098d6a-0e88-427a-9d18-d6d9058b9fe7.png?v=1759211149', desc: 'Keep drains clean & clog-free. 5 pieces per pack.', badge: 'sale', featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/1_1_8f098d6a-0e88-427a-9d18-d6d9058b9fe7.png?v=1759211149', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/2_86e8556d-0f45-4375-8f99-ad60a265b0aa.png?v=1759211149', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/3_1_d47fa8b4-76e5-4eb0-a57c-e6479123b511.png?v=1759211149', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/4_1_4f6796d6-67c4-42b3-929e-48510498868f.png?v=1759211149'], bodyHtml: `<p><strong>Disposable Drain Cover – Keep Your Drains Clean &amp; Clog-Free 1 pack Contains 5 Pieces</strong></p>
+<p>Say goodbye to messy clogs and costly plumbing issues with our <strong>Disposable Drain Cover</strong>. Designed for convenience and hygiene, this cover effectively traps hair, food particles, and debris before they enter your drain. Simply place it over your sink, shower, or bathtub drain, and once it’s full—just dispose of it.<br><br></p>
+<p>✅ <strong>Easy to Use</strong> – No installation required, just place and remove.<br>✅ <strong>Hygienic &amp; Disposable</strong> – Prevents buildup and odors.<br>✅ <strong>Universal Fit</strong> – Works on most sinks, showers, and bathroom drains.<br>✅ <strong>Cost-Effective</strong> – Save money on plumbing and cleaning services.</p>
+<p>Perfect for homes, hostels, salons, or anywhere drain clogs are a hassle. Keep your drains flowing freely with this simple, effective solution.<br><strong>Package Include : 5 Covers in 1 pack</strong><br></p>` },
+      {
+        id: 18, name: 'ClosetEase Storage Bag', category: 'Storage', price: 299, oldPrice: 459, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/6.png?v=1759209718', desc: 'Spacious, breathable storage bag with transparent window.', badge: 'sale', featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/6.png?v=1759209718', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep27_2025_11_35_00PM.png?v=1759209718', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep26_2025_04_54_28PM.png?v=1759210657', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/pack_of_3.png?v=1759210657', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/org_5.png?v=1759210657', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep26_2025_04_50_52PM.png?v=1759210657', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/organizer_image_3.png?v=1759210657', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/7.png?v=1759210657'], bodyHtml: `<h3>ClosetEase™ Storage Bag</h3>
+<p><strong>Keep Your Wardrobe Neat, Clean &amp; Organized</strong> ✨</p>
+<p>Say goodbye to cluttered wardrobes and messy spaces! The <strong>ClosetEase™ Storage Bag</strong> is designed to give your clothes a safe, dust-free, and organized home. Perfect for storing seasonal clothes, blankets, bedding, and more — all while saving space.</p>
+<p>✅ <strong>Spacious Capacity</strong> – Store clothes, comforters, and linens with ease.<br>✅ <strong>Premium Material</strong> – Made with durable, breathable fabric to keep clothes fresh.<br>✅ <strong>Transparent Window</strong> – Quickly find what you need without opening every bag.<br>✅ <strong>Strong Zippers &amp; Handles</strong> – Built for long-lasting use and easy carrying.<br>✅ <strong>Foldable Design</strong> – Collapses flat when not in use, saving even more space.</p>
+<p>Whether you’re organizing your wardrobe, moving homes, or packing away seasonal items, the <strong>ClosetEase™ Storage Bag</strong> is your go-to solution for effortless storage.</p>
+<p><strong>✔ Perfect for: Bedrooms | Wardrobes | Shelves | Under-bed storage</strong></p>` },
+      {
+        id: 19, name: 'Magic Cleaner Wiper', category: 'Cleaning', price: 229, oldPrice: 329, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsApp_Image_2025-09-28_at_5.25.51_PM.jpg?v=1760356646', desc: 'Streak-free cleaning for glass, mirrors, tiles & countertops.', badge: null, featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsApp_Image_2025-09-28_at_5.25.51_PM.jpg?v=1760356646', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep15_2025_10_37_01AM.png?v=1760356646', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsApp_Image_2025-09-28_at_5.25.51_PM_1.jpg?v=1760356646', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsApp_Image_2025-09-28_at_5.25.51_PM_2.jpg?v=1760356646', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsApp_Image_2025-09-28_at_5.25.52_PM.jpg?v=1760356646', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep15_2025_12_19_58PM.png?v=1760356646', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsApp_Image_2025-09-15_at_12.11.52_PM_1.jpg?v=1760356646', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsApp_Image_2025-09-15_at_12.11.52_PM.jpg?v=1760356646', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/wiper.jpg?v=1763654116'], bodyHtml: `<h3>Streak-Free Cleaning Made Simple</h3>
+<p>Make cleaning fast, effortless, and satisfying with the <strong>Magic Cleaner Wiper</strong> — your all-in-one solution for spotless surfaces. Designed with a flexible silicone blade and ergonomic handle, this powerful tool quickly removes water, dust, and stains <strong>without leaving streaks or scratches.</strong></p>
+<p>✅ <strong>Streak-Free Shine:</strong> Wipes away water and dirt from glass, mirrors, tiles, and countertops in one smooth motion.<br>✅ <strong>Multi-Surface Use:</strong> Perfect for windows, bathroom mirrors, kitchen shelves, shower doors, car windshields, and more.<br>✅ <strong>Compact &amp; Lightweight:</strong> Easy to store and handle, making daily cleaning quicker and more convenient.<br>✅ <strong>Durable &amp; Long-Lasting:</strong> Made with premium quality materials that resist wear and tear for extended use.<br>✅ <strong>Effortless Cleaning:</strong> Cuts cleaning time in half — just swipe and watch the magic happen!</p>
+<p>Whether it’s for your kitchen, bathroom, or windows, the <strong>Magic Cleaner Wiper</strong> turns tough cleaning into a quick and satisfying task — leaving every surface sparkling clean. 🌟</p>` },
+      {
+        id: 20, name: 'SmartClean Silicone Sponge', category: 'Cleaning', price: 299, oldPrice: 429, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep24_2025_11_20_51PM.png?v=1764500848', desc: '2-in-1 scrubber & soap dispenser. Hygienic & quick-drying.', badge: 'new', featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep24_2025_11_20_51PM.png?v=1764500848', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsApp_Image_2025-10-23_at_5.05.45_PM.jpg?v=1764500848', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep24_2025_11_11_17PM.png?v=1764500848', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep24_2025_11_13_44PM.png?v=1764500848', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/spounge.jpg?v=1764500848'], bodyHtml: `<h3>🧼 <strong>Silicone Dish Soap Brush – 2-in-1 Scrubber &amp; Dispenser</strong>
+</h3>
+<p><strong>Effortless Dishwashing, All in One Tool</strong></p>
+<p>Say goodbye to messy sinks and stubborn grease with our innovative <strong>Silicone Dish Soap Brush.</strong> This clever 2-in-1 tool combines a soft yet powerful silicone scrubber with a built-in soap dispenser — giving you a faster, cleaner, and more hygienic dishwashing experience.</p>
+<p>✅ <strong>2-in-1 Design:</strong> Built-in soap dispenser releases detergent with a gentle press, saving time and effort.<br>✅ <strong>Soft, Non-Scratch Bristles:</strong> Made of high-quality food-grade silicone — tough on grease but safe for non-stick pans, plates, and glassware.<br>✅ <strong>Ergonomic &amp; Easy Grip:</strong> Lightweight, comfortable to hold, and designed for one-hand use.<br>✅ <strong>Hygienic &amp; Quick-Drying:</strong> Silicone material resists bacteria, dries quickly, and is easy to rinse clean.<br>✅ <strong>Multi-Purpose Use:</strong> Perfect for dishes, utensils, pots, kitchen sinks, and even bathroom surfaces.</p>` },
+      {
+        id: 21, name: 'Easy Filter – Stainless Steel', category: 'Kitchen', price: 399, oldPrice: 549, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep24_2025_10_43_36PM.png?v=1758803080', desc: 'Mess-free cooking with spice infuser. Rust-resistant.', badge: null, featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep24_2025_10_43_36PM.png?v=1758803080', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep24_2025_10_53_00PM.png?v=1758803081', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep24_2025_11_09_34PM.png?v=1758803215', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/easyFilter.jpg?v=1763654116'], bodyHtml: `<p><strong>Effortless Flavor. Zero Mess.</strong></p>
+<p>Make your soups, curries, broths, and teas cleaner and more flavorful with our premium <strong>Easy Filter Stainless Steel Infuser.</strong> Designed to hold whole spices, herbs, cloves, cardamom, and other seasonings, this smart kitchen tool keeps your dishes infused with rich aroma <strong>without leaving residue behind.</strong></p>
+<p>✅ <strong>Premium Stainless Steel:</strong> Rust-resistant, durable, and built to last even with daily use.<br>✅ <strong>Mess-Free Cooking:</strong> Infuse your meals with whole spices and herbs while keeping them contained — no more fishing them out later.<br>✅ <strong>Fine Mesh Design:</strong> Allows maximum flavor release while preventing particles from leaking into your dish.<br>✅ <strong>Multi-Purpose Use:</strong> Perfect for soups, curries, teas, stews, stocks, and herbal infusions.<br>✅ <strong>Easy to Use &amp; Clean:</strong> Simply fill, close, steep, and rinse. Dishwasher-safe for quick cleanup.</p>
+<p>Whether you’re preparing a hearty soup or brewing herbal tea, the <strong>Easy Filter Stainless Steel Infuser</strong> makes cooking more convenient, flavorful, and <strong>effortlessly clean.</strong></p>` },
+      {
+        id: 22, name: 'Spoon Rest', category: 'Kitchen', price: 99, oldPrice: 129, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep24_2025_09_44_28PM_b3c81160-0023-40ae-acf8-99d12dd164fc.png?v=1758790213', desc: 'Keep your countertop clean while cooking. Multiple slots.', badge: null, featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep24_2025_09_44_28PM_b3c81160-0023-40ae-acf8-99d12dd164fc.png?v=1758790213', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep24_2025_09_54_08PM_835caadc-1a8e-41de-bfca-6e0a199e5119.png?v=1758790450', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep24_2025_09_57_21PM_d45ade40-45b7-45af-b85f-9bb7fb6657a2.png?v=1758790408', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep24_2025_10_34_55PM_e212b5bf-76e9-47a6-901a-4c8e39761fd3.png?v=1758790450', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep24_2025_10_36_48PM_3e65ffc3-0363-4e45-bfb7-29650e240fb8.png?v=1758790409', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/SpoonRest.jpg?v=1763654116'], bodyHtml: `<p>Make cooking cleaner and more convenient with our <strong>premium Spoon Rest</strong>, designed to hold your spoons, ladles, and utensils while you cook. No more messy countertops — simply place your utensil on the rest and keep your kitchen spotless.</p>
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>
+<p>✅ <strong>Heat-Resistant &amp; Durable:</strong> Built to withstand high cooking temperatures without warping or melting.</p>
+</li>
+<li>
+<p>🧼 <strong>Easy to Clean:</strong> Smooth, non-stick surface wipes clean effortlessly or can be placed in the dishwasher.</p>
+</li>
+<li>
+<p>🪄 <strong>Non-Slip Base:</strong> Stays firmly in place on your countertop, even during busy cooking sessions.</p>
+</li>
+<li>
+<p>🍴 <strong>Multiple Slots Design:</strong> Holds multiple utensils at once — perfect for spoons, spatulas, tongs, and more.</p>
+</li>
+<li>
+<p>🪶 <strong>Compact &amp; Space-Saving:</strong> Sleek design fits seamlessly into any kitchen setup without taking up space.</p>
+</li>
+</ul>
+<p>✨ <strong>Say goodbye to countertop mess and hello to a more organized cooking experience!</strong></p>` },
+      {
+        id: 23, name: 'Multifunction Hand Chopper', category: 'Kitchen', price: 699, oldPrice: 1039, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_10_2025_09_44_29_PM.png?v=1758648075', desc: 'Stainless-steel blades for quick meal prep. Compact design.', badge: 'hot', featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_10_2025_09_44_29_PM.png?v=1758648075', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_10_2025_09_55_30_PM.png?v=1758648076', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_10_2025_10_28_19_PM.png?v=1758648075', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_10_2025_09_44_42_PM.png?v=1758648077', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_10_2025_09_50_07_PM.png?v=1758648078'], bodyHtml: `<p>Experience effortless chopping with the <strong>TREVO Multifunction Hand Chopper</strong> – your ultimate kitchen companion for quick meal prep. Designed with sharp, durable stainless-steel blades, it easily handles vegetables, fruits, nuts, and even meat. The <strong>ergonomic hand-pull mechanism</strong> ensures powerful chopping with minimal effort, while the <strong>compact, lightweight design</strong> makes it convenient for everyday use.</p>
+<p>Its <strong>transparent body</strong> allows you to monitor consistency, whether you need fine mincing or coarse chopping. The <strong>easy-to-clean, detachable parts</strong> save time in the kitchen, and its <strong>non-slip base</strong> keeps it steady during use. Perfect for salads, sauces, garnishes, and more – this chopper brings speed, safety, and versatility to your cooking routine.</p>` },
+      {
+        id: 24, name: 'Silicone Hand Gloves', category: 'Cleaning', price: 319, oldPrice: 499, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_27_2025_10_31_36_PM.png?v=1758998438', desc: 'Built-in scrubbing bristles. Heat resistant & reusable.', badge: 'sale', featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_27_2025_10_31_36_PM.png?v=1758998438', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_27_2025_10_34_24_PM.png?v=1758998438', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_27_2025_11_09_40_PM.png?v=1758998438', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_27_2025_10_38_29_PM.png?v=1758996992'], bodyHtml: `<p>Make your everyday cleaning <strong>faster, easier, and completely hassle-free</strong> with these premium-quality <strong>Silicone Brush Hand Gloves</strong>. Designed with soft, built-in scrubbing bristles, these gloves allow you to <strong>wash, scrub, and clean</strong> without using extra sponges or brushes.</p>
+<p>These reusable gloves are made from <strong>100% food-grade silicone</strong>, making them safe, durable, heat-resistant, and perfect for all kinds of kitchen and household cleaning tasks.</p>
+<h3><strong>💡 Why You’ll Love Them</strong></h3>
+<ul>
+<li>
+<p>🧽 <strong>Built-In Scrubber Bristles</strong> – No need for separate sponges! Thick silicone bristles help deep clean every corner.</p>
+</li>
+<li>
+<p>💧 <strong>Anti-Slip Grip</strong> – Ensures strong control even when washing greasy dishes.</p>
+</li>
+<li>
+<p>🔥 <strong>Heat Resistant</strong> – Safe to use with hot water, allowing better grease removal.</p>
+</li>
+<li>
+<p>🧤 <strong>Comfortable &amp; Flexible</strong> – Stretchable material fits all hand sizes easily.</p>
+</li>
+<li>
+<p>♻️ <strong>Reusable &amp; Long-Lasting</strong> – Eco-friendly gloves that can be washed &amp; used again.</p>
+</li>
+<li>
+<p>🦠 <strong>Hygienic &amp; Quick-Drying</strong> – Doesn’t hold bacteria like fabric sponges.</p>
+</li>
+<li>
+<p>🏡 <strong>Multi-Purpose Use</strong> – From kitchen cleaning to pet bathing, it’s a must-have tool.</p>
+</li>
+</ul>
+<h3><strong>✨ Perfect For</strong></h3>
+<ul>
+<li>
+<p>Dishwashing</p>
+</li>
+<li>
+<p>Cleaning kitchen slabs, sinks &amp; tiles</p>
+</li>
+<li>
+<p>Washing vegetables &amp; fruits</p>
+</li>
+<li>
+<p>Scrubbing bathroom surfaces</p>
+</li>
+<li>
+<p>Car wash &amp; bike wash</p>
+</li>
+<li>
+<p>Grooming pets</p>
+</li>
+<li>
+<p>Dusting &amp; general cleaning</p>
+</li>
+</ul>
+<h3><strong>🌟 Product Highlights</strong></h3>
+<ul>
+<li>
+<p>Material: Food-Grade Silicone</p>
+</li>
+<li>
+<p>One Size Fits All</p>
+</li>
+<li>
+<p>Temperature Resistant: Up to 160°C</p>
+</li>
+<li>
+<p>Available in Multiple Colors</p>
+</li>
+<li>
+<p>Super elastic &amp; tear-resistant</p>
+</li>
+</ul>
+<hr>
+<p> </p>` },
+      {
+        id: 25, name: '360° Rotating Hooks', category: 'Home Essentials', price: 199, oldPrice: 299, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/00f038ae-8c61-4e18-a5cb-bd11094bc30c.png?v=1758621606', desc: 'Strong adhesive, no drilling. Saves space in any room.', badge: null, featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/00f038ae-8c61-4e18-a5cb-bd11094bc30c.png?v=1758621606', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/Untitled_project-Layer_1_1.png?v=1758621606', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/dreamina-2025-09-21-2597-mKAE_ME_3d_mEASUREENTS.jpg?v=1758621606', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/dreamina-2025-09-21-4122-use_this_object_as_sample_make_a_collage....jpg?v=1758621606', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/dreamina-2025-09-21-9768-Make_it_with_a_classy_background.jpg?v=1758621606', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/dreamina-2025-09-21-8972-I_want_to_make_it_more_enhancedand_clea....jpg?v=1758621606', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/3.hook.jpg?v=1758621606'], bodyHtml: `<p>🔄 <strong>360° Rotation</strong><br>Easily rotate in any direction to hang or remove items without hassle. Perfect for flexible use in kitchens, bathrooms, or closets.</p>
+<p>🧲 <strong>Strong Adhesive</strong><br>High-quality adhesive backing ensures a firm hold on smooth surfaces – no drilling, no damage, just peel and stick.</p>
+<p>📦 <strong>Saves Space</strong><br>Maximize your storage area by keeping items neatly organized and off the counter. Ideal for small spaces and smart living.</p>
+<p>👌 <strong>Easy Access</strong><br>Quickly reach your essentials with a smooth rotating design – hang, pick, or move items in seconds.</p>` },
+    ];
+
+    let cart = JSON.parse(localStorage.getItem('trevoCart') || '[]');
+    function saveCart() { localStorage.setItem('trevoCart', JSON.stringify(cart)); }
+    function getCartCount() { return cart.reduce((s, i) => s + i.qty, 0); }
+    function updateCartBadge() {
+      const count = getCartCount();
+      const badge = document.getElementById('cartCount');
+      badge.textContent = count;
+      badge.classList.remove('pulse');
+      void badge.offsetWidth;
+      if (count > 0) badge.classList.add('pulse');
+    }
+    function addToCart(id, btnEl) {
+      const p = PRODUCTS.find(p => p.id === id); if (!p) return;
+      const ex = cart.find(i => i.id === id);
+      if (ex) ex.qty++; else cart.push({ id, name: p.name, price: p.price, img: p.img, qty: 1 });
+      saveCart(); updateCartBadge();
+      if (btnEl) { btnEl.classList.add('adding'); setTimeout(() => btnEl.classList.remove('adding'), 400); }
+      showToast('✅ "' + p.name + '" added to cart');
+    }
+    function removeFromCart(id) { cart = cart.filter(i => i.id !== id); saveCart(); updateCartBadge(); renderCart(); }
+    function updateQty(id, delta) { const item = cart.find(i => i.id === id); if (!item) return; item.qty = Math.max(1, item.qty + delta); saveCart(); renderCart(); updateCartBadge(); }
+    function setQty(id, val) { const item = cart.find(i => i.id === id); if (!item) return; const q = parseInt(val); if (!isNaN(q) && q >= 1) { item.qty = q; saveCart(); updateCartBadge(); renderCart(); } }
+    function clearCart() { if (!cart.length) return; if (!confirm('Clear your entire cart?')) return; cart = []; saveCart(); updateCartBadge(); renderCart(); }
+    function getTotal() { return cart.reduce((s, i) => s + (i.price * i.qty), 0); }
+    function formatPrice(p) { return 'Rs. ' + p.toLocaleString(); }
+
+    function renderProductCard(p) {
+      const badgeHtml = p.badge ? '<span class="badge badge-' + p.badge + '">' + (p.badge === 'sale' ? '% Sale' : p.badge === 'new' ? '★ New' : '🔥 Hot') + '</span>' : '';
+      const oldHtml = p.oldPrice ? '<div style="color:var(--text-light);text-decoration:line-through;font-size:.8rem;">' + formatPrice(p.oldPrice) + '</div>' : '';
+      const imgHtml = p.img ? '<img src="' + p.img + '" alt="' + p.name + '" style="width:100%;height:100%;object-fit:cover;" loading="lazy" />' : '<span style="font-size:4rem;">📦</span>';
+      return '<div class="product-card" onclick="openProductDetail(' + p.id + ')"><div class="product-img" style="background:#f5f0fa;">' + badgeHtml + imgHtml + '</div><div class="product-body"><div class="product-category">' + p.category + '</div><div class="product-name">' + p.name + '</div><div class="product-desc">' + p.desc + '</div><div class="product-footer"><div><div class="product-price">' + formatPrice(p.price) + '</div>' + oldHtml + '</div><button class="add-btn" onclick="event.stopPropagation(); addToCart(' + p.id + ',this)">+ Add to Cart</button></div></div></div>';
+    }
+
+    function openProductDetail(id) {
+      const p = PRODUCTS.find(x => x.id === id);
+      if (!p) return;
+
+      document.getElementById('pdTitle').textContent = p.name;
+      document.getElementById('pdCategory').textContent = p.category;
+      document.getElementById('pdBody').innerHTML = p.bodyHtml || p.desc;
+
+      const badgeEl = document.getElementById('pdBadge');
+      badgeEl.innerHTML = p.badge ? `<span class="pd-badge badge-${p.badge}">${p.badge === 'sale' ? '% Sale' : p.badge === 'new' ? '★ New' : '🔥 Hot'}</span>` : '';
+
+      const oldPriceHtml = p.oldPrice ? `<span class="pd-old-price">${formatPrice(p.oldPrice)}</span>` : '';
+      const saveHtml = p.oldPrice ? `<span class="pd-save">Save ${Math.round((p.oldPrice - p.price) / p.oldPrice * 100)}%</span>` : '';
+      document.getElementById('pdPriceRow').innerHTML = `<span class="pd-price">${formatPrice(p.price)}</span> ${oldPriceHtml} ${saveHtml}`;
+
+      const mainImg = document.getElementById('pdMainImg');
+      mainImg.src = p.img;
+
+      const thumbsContainer = document.getElementById('pdThumbs');
+      thumbsContainer.innerHTML = (p.images && p.images.length > 0 ? p.images : [p.img]).map((src, idx) => `
+        <div class="pd-thumb ${idx === 0 ? 'active' : ''}" onclick="selectGalleryImage(this, '${src}')">
+          <img src="${src}" alt="Thumb" />
+        </div>
+      `).join('');
+
+      document.getElementById('pdActions').innerHTML = `
+        <button class="add-btn" style="width: 100%; padding: 14px 24px; font-size: 1.1rem; border-radius: var(--radius-full); margin-top: 10px;" onclick="addToCart(${p.id}, this); setTimeout(() => closeModal('productDetail'), 500);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+          Add to Cart &nbsp;•&nbsp; ${formatPrice(p.price)}
+        </button>
+      `;
+
+      openModal('productDetail');
+    }
+
+    function selectGalleryImage(el, src) {
+      document.getElementById('pdMainImg').src = src;
+      document.querySelectorAll('.pd-thumb').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+    }
+    function renderFeatured() { document.getElementById('featuredGrid').innerHTML = PRODUCTS.filter(p => p.featured).map(renderProductCard).join(''); }
+    let activeCategory = 'All';
+    function renderAllProducts(filter, search) {
+      filter = filter || 'All'; search = search || '';
+      const grid = document.getElementById('allProductsGrid');
+      const noRes = document.getElementById('noResults');
+      let filtered = PRODUCTS;
+      if (filter !== 'All') filtered = filtered.filter(p => p.category === filter);
+      if (search) filtered = filtered.filter(p => p.name.toLowerCase().includes(search.toLowerCase()) || p.desc.toLowerCase().includes(search.toLowerCase()));
+      if (!filtered.length) { grid.innerHTML = ''; noRes.classList.remove('hidden'); }
+      else { noRes.classList.add('hidden'); grid.innerHTML = filtered.map(renderProductCard).join(''); }
+    }
+    function renderCategoryFilter() {
+      const cats = ['All', ...new Set(PRODUCTS.map(p => p.category))];
+      document.getElementById('categoryFilter').innerHTML = cats.map(c => '<button class="cat-btn' + (c === 'All' ? ' active' : '') + '" onclick="selectCategory(\'' + c + '\',this)">' + c + '</button>').join('');
+    }
+    function selectCategory(cat, btn) {
+      activeCategory = cat;
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active'); filterProducts();
+    }
+    function filterProducts() { const search = document.getElementById('productSearch') && document.getElementById('productSearch').value || ''; renderAllProducts(activeCategory, search); }
+    function headerSearchHandler(val) { navigate('products'); setTimeout(() => { const inp = document.getElementById('productSearch'); if (inp) { inp.value = val; filterProducts(); } }, 50); }
+
+    let selectedDeliveryType = 'standard';
+    function getDeliveryCost() { return selectedDeliveryType === 'urgent' ? 350 : 199; }
+    function selectDelivery(type, el) {
+      selectedDeliveryType = type;
+      document.querySelectorAll('.delivery-option').forEach(d => { d.classList.remove('selected'); d.querySelector('input').checked = false; });
+      el.classList.add('selected');
+      el.querySelector('input').checked = true;
+      updateCartTotals();
+    }
+    function updateCartTotals() {
+      const deliveryCost = getDeliveryCost();
+      const total = getTotal() + (cart.length > 0 ? deliveryCost : 0);
+      document.getElementById('summarySubtotal').textContent = formatPrice(getTotal());
+      document.getElementById('summaryDelivery').textContent = formatPrice(deliveryCost);
+      document.getElementById('summaryTotal').textContent = formatPrice(total);
+    }
+
+    function renderCart() {
+      const empty = document.getElementById('cartEmpty');
+      const content = document.getElementById('cartContent');
+      if (!cart.length) { empty.style.display = 'block'; content.style.display = 'none'; return; }
+      empty.style.display = 'none'; content.style.display = 'grid';
+      document.getElementById('cartItems').innerHTML = cart.map(item => '<div class="cart-item"><div class="cart-item-img">' + (item.img ? '<img src="' + item.img + '" alt="' + item.name + '" style="width:100%;height:100%;object-fit:cover;border-radius:12px;" />' : '📦') + '</div><div class="cart-item-info"><div class="cart-item-name">' + item.name + '</div><div class="cart-item-price">' + formatPrice(item.price) + ' each</div><div class="qty-control"><button class="qty-btn" onclick="updateQty(' + item.id + ',-1)">−</button><input class="qty-val" type="number" value="' + item.qty + '" min="1" onchange="setQty(' + item.id + ',this.value)" /><button class="qty-btn" onclick="updateQty(' + item.id + ',1)">+</button></div></div><div style="text-align:right;flex-shrink:0;"><div style="font-weight:700;color:var(--purple-dark);margin-bottom:10px;">' + formatPrice(item.price * item.qty) + '</div><button class="cart-item-remove" onclick="removeFromCart(' + item.id + ')" title="Remove">🗑</button></div></div>').join('');
+      updateCartTotals();
+    }
+
+    // --- Order Persistence (Firebase + localStorage fallback) ---
+    function getLocalOrders() { return JSON.parse(localStorage.getItem('trevoOrders') || '[]'); }
+    function saveLocalOrders(orders) { localStorage.setItem('trevoOrders', JSON.stringify(orders)); }
+    function generateLocalOrderId() {
+      const orders = getLocalOrders();
+      const maxId = orders.reduce((max, o) => Math.max(max, parseInt(o.orderId.replace('TRV-', '')) || 0), 0);
+      return { orderId: 'TRV-' + String(maxId + 1).padStart(4, '0'), orderNum: maxId + 1 };
+    }
+
+    async function saveOrder() {
+      const deliveryCost = getDeliveryCost();
+      const deliveryLabel = selectedDeliveryType === 'urgent' ? 'Urgent (2–3 days)' : 'Standard (5–7 days)';
+
+      // Get next order ID (Firestore-first, localStorage fallback)
+      let idData = null;
+      if (firebaseReady) {
+        idData = await firestoreNextOrderId();
+      }
+      if (!idData) {
+        idData = generateLocalOrderId();
+      }
+
+      const order = {
+        orderId: idData.orderId,
+        orderNum: idData.orderNum,
+        date: new Date().toISOString(),
+        items: cart.map(i => ({ name: i.name, qty: i.qty, price: i.price })),
+        deliveryType: deliveryLabel,
+        subtotal: getTotal(),
+        deliveryCost: deliveryCost,
+        total: getTotal() + deliveryCost,
+        status: 'Pending'
+      };
+
+      // Always save to localStorage as backup
+      const localOrders = getLocalOrders();
+      localOrders.push(order);
+      saveLocalOrders(localOrders);
+
+      // Save to Firestore (cloud)
+      await firestoreSaveOrder(order);
+
+      return order;
+    }
+
+    async function checkoutWhatsApp() {
+      if (!cart.length) return;
+      const deliveryCost = getDeliveryCost();
+      const deliveryLabel = selectedDeliveryType === 'urgent' ? 'Urgent Delivery (2–3 days)' : 'Standard Delivery (5–7 days)';
+      let msg = 'Hello Trevo! \n\nI would like to place an order:\n\n';
+      cart.forEach((item, i) => { msg += (i + 1) + '. ' + item.name + '\n   Qty: ' + item.qty + ' x ' + formatPrice(item.price) + ' = ' + formatPrice(item.price * item.qty) + '\n\n'; });
+      const finalTotal = getTotal() + deliveryCost;
+      msg += '─────────────────\nSubtotal: ' + formatPrice(getTotal()) + '\nShipping: ' + formatPrice(deliveryCost) + ' (' + deliveryLabel + ')\n *Total: ' + formatPrice(finalTotal) + '*\n\nPlease confirm my order. Thank you!';
+      // Save order before opening WhatsApp
+      const order = await saveOrder();
+      showToast('📋 Order ' + order.orderId + ' saved!');
+      window.open('https://wa.me/923007041451?text=' + encodeURIComponent(msg), '_blank');
+    }
+
+    function navigate(page) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-' + page).classList.add('active');
+      document.querySelectorAll('[data-page]').forEach(a => a.classList.toggle('active', a.dataset.page === page));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (page === 'cart') renderCart();
+      if (page === 'products') { renderCategoryFilter(); renderAllProducts(); }
+    }
+
+    function submitContact() {
+      const n = document.getElementById('contactName').value.trim();
+      const e = document.getElementById('contactEmail').value.trim();
+      const m = document.getElementById('contactMsg').value.trim();
+      if (!n || !e || !m) { showToast('⚠️ Please fill in all fields.'); return; }
+      document.getElementById('contactSuccess').classList.remove('hidden');
+      document.getElementById('contactName').value = '';
+      document.getElementById('contactEmail').value = '';
+      document.getElementById('contactMsg').value = '';
+      setTimeout(() => document.getElementById('contactSuccess').classList.add('hidden'), 5000);
+    }
+
+    function showToast(msg) {
+      const c = document.getElementById('toastContainer');
+      const t = document.createElement('div'); t.className = 'toast'; t.innerHTML = '<span>' + msg + '</span>';
+      c.appendChild(t);
+      setTimeout(() => { t.classList.add('removing'); setTimeout(() => t.remove(), 300); }, 2800);
+    }
+
+    function toggleMobileMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
+    function closeMobileMenu(e) { if (e.target === document.getElementById('mobileMenu')) toggleMobileMenu(); }
+    window.addEventListener('scroll', () => { document.getElementById('header').classList.toggle('scrolled', window.scrollY > 10); });
+
+    // Modal functions
+    function openModal(id) {
+      document.getElementById('modal-' + id).classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal(id) {
+      document.getElementById('modal-' + id).classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function closeModalOverlay(e) {
+      if (e.target.classList.contains('modal-overlay')) {
+        e.target.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    }
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-overlay.open').forEach(m => {
+          m.classList.remove('open');
+          document.body.style.overflow = '';
+        });
+      }
+    });
+
+    renderFeatured();
+    updateCartBadge();
+  </script>
+</body>
+
+</html>
