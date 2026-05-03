@@ -24,30 +24,43 @@ The shipping cost is hardcoded into the JavaScript logic for the cart and WhatsA
 
 ---
 
-## 2. Managing Products
+## 2. Managing Products (Inventory)
 
-All products are defined in a `PRODUCTS` array inside `index.html`.
+Products are now managed through **Firebase Firestore** and can be edited directly from the Admin Panel.
 
-### How to Add a New Product
-```javascript
-  {
-    id: 26,                    // Must be a unique number
-    name: 'Product Name Here',
-    category: 'Kitchen',       // Examples: Kitchen, Home Essentials, Cleaning, Storage
-    price: 500,                // Selling price (numbers only, no commas)
-    oldPrice: 800,             // Original price (use null if no discount)
-    img: 'https://link-to-image.jpg',
-    desc: 'A short description of the product.',
-    badge: 'sale',             // Options: 'sale', 'new', 'hot', or null
-    featured: true             // true = show on Home page, false = Products page only
-  },
-```
+### How It Works
+- Products are stored in the `products` collection in Firestore
+- The storefront (`index.html`) loads products dynamically from Firestore on every page load
+- The admin panel has a dedicated **Inventory** tab for full product management
+- A seed dataset is embedded in `index.html` — on first visit, it auto-populates Firestore if the collection is empty
 
-### Removing a Product
-Delete the corresponding `{ id: ..., name: ... }` block from the `PRODUCTS` array.
+### Admin Panel — Inventory Tab
+1. Log in to the Admin Panel (`admin.html`)
+2. Click the **🏪 Inventory** tab
+3. From here you can:
+   - **View all products** with image, name, category, price, quantity, badge, and featured status
+   - **Edit quantity inline** — just change the number in the Qty column
+   - **Add a new product** — click "＋ Add Product" and fill in the form
+   - **Edit a product** — click the ✏️ button on any row
+   - **Delete a product** — click the 🗑 button on any row
+   - **Search & filter** by name or category
 
-### Changing Product Images
-Replace the URL inside the `img: '...'` property with a direct image link (e.g. from Imgur or your Shopify CDN).
+### Product Fields
+| Field | Required | Description |
+|---|---|---|
+| Name | ✅ | Product display name |
+| Category | ✅ | e.g. Kitchen, Home Essentials, Cleaning, Storage |
+| Price | ✅ | Selling price in Rs. |
+| Old Price | ❌ | Original price for discount display (leave empty if no discount) |
+| Image URL | ✅ | Direct link to product image |
+| Short Description | ✅ | One-line summary shown on product cards |
+| Detailed HTML | ❌ | Rich HTML body shown in product detail modal |
+| Badge | ❌ | Options: sale, new, hot, or none |
+| Featured | ❌ | If checked, product appears on the homepage |
+| Quantity | ❌ | Inventory count (only visible to admin, not customers) |
+
+### Adding Products via Code (Legacy)
+Products can still be added to the `SEED_PRODUCTS` array in `index.html` for initial seeding. However, for day-to-day management, use the Admin Panel.
 
 ---
 
@@ -63,9 +76,9 @@ Find the `<div class="page" id="page-contact">` block in `index.html` and update
 
 ---
 
-## 4. Firebase Setup (Cloud Order Sync)
+## 4. Firebase Setup (Cloud Sync)
 
-Orders are synced via **Firebase Firestore** so that when a customer places an order, it appears in your admin panel in real-time on any device.
+Orders and products are synced via **Firebase Firestore** so that data is consistent across all devices.
 
 ### Current Firebase Project
 The store is already connected to the live Firebase project:
@@ -78,6 +91,12 @@ The store is already connected to the live Firebase project:
 
 Config is stored in `firebase-config.js` — no changes needed unless you switch projects.
 
+### Firestore Collections
+| Collection | Purpose |
+|---|---|
+| `orders` | Customer orders (created at checkout, managed in admin) |
+| `products` | Product catalog (auto-seeded, managed in admin Inventory tab) |
+
 ### Firestore Security Rules
 The `firestore.rules` file contains the correct public-ready rules. To apply them:
 1. Go to [console.firebase.google.com](https://console.firebase.google.com) → select `trevo-6d260`
@@ -85,12 +104,11 @@ The `firestore.rules` file contains the correct public-ready rules. To apply the
 3. Replace everything with the contents of `firestore.rules`
 4. Click **Publish**
 
-These rules allow customers to place orders but block anyone from reading or modifying the full order list publicly.
-
 ### How It Works
+- **Customer visits store** → products loaded from Firestore in real-time
 - **Customer places an order** → saved to Firestore cloud database
-- **Admin panel** → reads orders in **real-time** (no refresh needed)
-- **Fallback** → if Firebase isn't reachable, orders fall back to localStorage
+- **Admin panel** → reads orders and products in **real-time** (no refresh needed)
+- **Fallback** → if Firebase isn't reachable, seed products are used as fallback
 
 ---
 
@@ -128,6 +146,8 @@ The admin panel is at `admin.html` (e.g. `yoursite.com/admin.html`).
 3. Replace the hash string with the new hash
 
 ### Dashboard Features
+
+#### Orders Tab (📦)
 - **Firebase status banner** — shows whether you're connected to cloud or using offline mode
 - **Real-time updates** — new orders appear automatically without refreshing
 - **Summary cards** — total orders, total revenue, pending count, delivered count
@@ -136,6 +156,15 @@ The admin panel is at `admin.html` (e.g. `yoursite.com/admin.html`).
 - **Search** — filter orders by order ID or product name
 - **Status filter** — filter by order status
 - **Delete** — remove individual orders or clear all
+
+#### Inventory Tab (🏪)
+- **Summary cards** — total products, categories, low stock (≤5), out of stock (0)
+- **Products table** — shows all products with image, name, category, price, quantity, badge, featured
+- **Inline quantity editing** — change quantity directly in the table
+- **Add product** — modal form with all product fields
+- **Edit product** — pre-filled modal for updating existing products
+- **Delete product** — remove with confirmation
+- **Search & filter** — by name or category
 
 ---
 

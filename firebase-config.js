@@ -29,18 +29,11 @@ try {
   if (FIREBASE_CONFIG.apiKey !== "YOUR_API_KEY" && FIREBASE_CONFIG.projectId !== "YOUR_PROJECT_ID") {
     firebase.initializeApp(FIREBASE_CONFIG);
     db = firebase.firestore();
+    firebase.firestore.setLogLevel('silent');
     firebaseReady = true;
-    console.log('🔥 Trevo: Firebase connected successfully');
-  } else {
-    console.warn(
-      '⚠️ Trevo: Firebase not configured — using localStorage fallback.\n' +
-      '   Update FIREBASE_CONFIG in firebase-config.js with your credentials.\n' +
-      '   See: https://console.firebase.google.com'
-    );
   }
 } catch (err) {
-  console.error('❌ Trevo: Firebase initialization failed:', err);
-  console.warn('⚠️ Falling back to localStorage.');
+  // Silent fallback to localStorage if Firebase fails
 }
 
 // ── Firestore Helpers ────────────────────────────────────
@@ -116,5 +109,78 @@ async function firestoreNextOrderId() {
   } catch (err) {
     console.error('Firestore query error:', err);
     return null;
+  }
+}
+
+// ── Products Collection Helpers ──────────────────────────
+const PRODUCTS_COLLECTION = 'products';
+
+
+
+/**
+ * Get all products from Firestore (one-time fetch).
+ */
+async function firestoreGetAllProducts() {
+  if (!firebaseReady) return null;
+  try {
+    const snapshot = await db.collection(PRODUCTS_COLLECTION).orderBy('id').get();
+    return snapshot.docs.map(doc => doc.data());
+  } catch (err) {
+    console.error('Firestore products read error:', err);
+    return null;
+  }
+}
+
+/**
+ * Save or update a product document (uses product id as doc ID).
+ */
+async function firestoreSaveProduct(product) {
+  if (!firebaseReady) return;
+  try {
+    await db.collection(PRODUCTS_COLLECTION).doc(String(product.id)).set(product);
+  } catch (err) {
+    console.error('Firestore product write error:', err);
+  }
+}
+
+/**
+ * Update specific fields on a product document.
+ */
+async function firestoreUpdateProduct(productId, data) {
+  if (!firebaseReady) return;
+  try {
+    await db.collection(PRODUCTS_COLLECTION).doc(String(productId)).update(data);
+  } catch (err) {
+    console.error('Firestore product update error:', err);
+  }
+}
+
+/**
+ * Delete a product document.
+ */
+async function firestoreDeleteProduct(productId) {
+  if (!firebaseReady) return;
+  try {
+    await db.collection(PRODUCTS_COLLECTION).doc(String(productId)).delete();
+  } catch (err) {
+    console.error('Firestore product delete error:', err);
+  }
+}
+
+/**
+ * Get the next product ID by finding the max existing ID.
+ */
+async function firestoreNextProductId() {
+  if (!firebaseReady) return 1;
+  try {
+    const snapshot = await db.collection(PRODUCTS_COLLECTION)
+      .orderBy('id', 'desc')
+      .limit(1)
+      .get();
+    if (snapshot.empty) return 1;
+    return (snapshot.docs[0].data().id || 0) + 1;
+  } catch (err) {
+    console.error('Firestore product ID query error:', err);
+    return Date.now(); // Fallback to timestamp-based ID
   }
 }

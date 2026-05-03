@@ -24,5 +24,21 @@ service cloud.firestore {
       allow delete: if true;
     }
 
+    // ── Products Collection ───────────────────────────────────────
+    match /products/{productId} {
+
+      // ✅ Anyone can READ products (storefront loads from Firestore)
+      allow read: if true;
+
+      // ✅ Allow create (auto-seed from storefront + admin adding new products)
+      allow create: if true;
+
+      // ✅ Allow updates (admin panel edits quantity, price, etc.)
+      allow update: if true;
+
+      // ✅ Allow deletes (admin panel can remove products)
+      allow delete: if true;
+    }
+
   }
 }

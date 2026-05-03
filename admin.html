@@ -110,8 +110,40 @@
     .loader-msg{color:var(--text-muted);font-size:.9rem;font-weight:500;letter-spacing:.01em}
 
     @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-    @media(max-width:768px){.topbar{padding:12px 16px}.main{padding:20px 16px}.stats{grid-template-columns:1fr 1fr}.toolbar{flex-direction:column;align-items:stretch}.toolbar-search{max-width:100%}}
-    @media(max-width:480px){.stats{grid-template-columns:1fr}.login-card{padding:32px 24px}}
+
+    /* TABS */
+    .tab-nav{display:flex;gap:0;background:#fff;border-bottom:2px solid var(--border);margin-bottom:28px;border-radius:var(--radius) var(--radius) 0 0;overflow:hidden}
+    .tab-btn{flex:1;padding:14px 20px;border:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:.92rem;font-weight:600;color:var(--text-muted);cursor:pointer;transition:all .2s;position:relative;display:flex;align-items:center;justify-content:center;gap:8px}
+    .tab-btn:hover{background:var(--purple-light);color:var(--purple-dark)}
+    .tab-btn.active{color:var(--purple-dark);background:var(--purple-light)}
+    .tab-btn.active::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:3px;background:var(--purple);border-radius:3px 3px 0 0}
+    .tab-content{display:none;animation:fadeUp .3s ease}
+    .tab-content.active{display:block}
+
+    /* INVENTORY TABLE */
+    .prod-img-thumb{width:44px;height:44px;border-radius:8px;object-fit:cover;background:var(--bg-soft);border:1px solid var(--border)}
+    .prod-badge{display:inline-block;padding:2px 8px;border-radius:var(--radius-full);font-size:.7rem;font-weight:700;text-transform:uppercase}
+    .prod-badge-sale{background:#fef3c7;color:#92400e}
+    .prod-badge-new{background:#dbeafe;color:#1e40af}
+    .prod-badge-hot{background:#fee2e2;color:#dc2626}
+    .qty-inline{width:60px;padding:4px 8px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:.85rem;text-align:center;outline:none}
+    .qty-inline:focus{border-color:var(--purple);box-shadow:0 0 0 3px var(--purple-glow)}
+    .featured-dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+    .featured-dot.yes{background:#16a34a}
+    .featured-dot.no{background:#d1d5db}
+
+    /* PRODUCT MODAL */
+    .prod-modal .modal-box{max-width:580px;max-height:90vh;overflow-y:auto}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .form-grid .full{grid-column:1/-1}
+    .form-field{display:flex;flex-direction:column;gap:4px}
+    .form-field label{font-size:.8rem;font-weight:600;color:var(--text-muted)}
+    .form-field input,.form-field select,.form-field textarea{padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none;transition:border-color .2s}
+    .form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:var(--purple);box-shadow:0 0 0 3px var(--purple-glow)}
+    .form-field textarea{min-height:80px;resize:vertical}
+
+    @media(max-width:768px){.topbar{padding:12px 16px}.main{padding:20px 16px}.stats{grid-template-columns:1fr 1fr}.toolbar{flex-direction:column;align-items:stretch}.toolbar-search{max-width:100%}.form-grid{grid-template-columns:1fr}}
+    @media(max-width:480px){.stats{grid-template-columns:1fr}.login-card{padding:32px 24px}.tab-nav{flex-direction:column}}
   </style>
 </head>
 <body>
@@ -136,7 +168,7 @@
       <div class="topbar-left">
         <img src="logo.png" alt="Trevo" />
         <h1>Admin</h1>
-        <span>ORDER MANAGER</span>
+        <span>DASHBOARD</span>
       </div>
       <div class="topbar-right">
         <button class="btn btn-ghost btn-sm" onclick="exportCSV()">📥 Export CSV</button>
@@ -147,39 +179,65 @@
     </div>
 
     <div class="main">
-      <div class="stats">
-        <div class="stat-card"><div class="stat-icon">📦</div><div class="stat-label">Total Orders</div><div class="stat-value" id="statOrders">0</div></div>
-        <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-label">Total Revenue</div><div class="stat-value" id="statRevenue">Rs. 0</div></div>
-        <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-label">Pending</div><div class="stat-value" id="statPending">0</div></div>
-        <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-label">Delivered</div><div class="stat-value" id="statDelivered">0</div></div>
+      <!-- Tab Navigation -->
+      <div class="tab-nav">
+        <button class="tab-btn active" onclick="switchTab('orders',this)">📦 Orders</button>
+        <button class="tab-btn" onclick="switchTab('inventory',this)">🏪 Inventory</button>
       </div>
 
-      <div class="toolbar">
-        <div class="toolbar-search">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input type="text" id="searchInput" placeholder="Search orders…" oninput="renderOrders()" />
+      <!-- ORDERS TAB -->
+      <div class="tab-content active" id="tab-orders">
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon">📦</div><div class="stat-label">Total Orders</div><div class="stat-value" id="statOrders">0</div></div>
+          <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-label">Total Revenue</div><div class="stat-value" id="statRevenue">Rs. 0</div></div>
+          <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-label">Pending</div><div class="stat-value" id="statPending">0</div></div>
+          <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-label">Delivered</div><div class="stat-value" id="statDelivered">0</div></div>
         </div>
-        <select id="statusFilter" onchange="renderOrders()">
-          <option value="All">All Statuses</option>
-          <option value="Pending">Pending</option>
-          <option value="Confirmed">Confirmed</option>
-          <option value="Shipped">Shipped</option>
-          <option value="Delivered">Delivered</option>
-        </select>
-        <button class="btn btn-danger btn-sm" onclick="clearAllOrders()">🗑 Clear All</button>
+        <div class="toolbar">
+          <div class="toolbar-search">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input type="text" id="searchInput" placeholder="Search orders…" oninput="renderOrders()" />
+          </div>
+          <select id="statusFilter" onchange="renderOrders()">
+            <option value="All">All Statuses</option>
+            <option value="Pending">Pending</option>
+            <option value="Confirmed">Confirmed</option>
+            <option value="Shipped">Shipped</option>
+            <option value="Delivered">Delivered</option>
+          </select>
+          <button class="btn btn-danger btn-sm" onclick="clearAllOrders()">🗑 Clear All</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Order #</th><th>Date</th><th>Items</th><th>Delivery</th><th>Total</th><th>Status</th><th></th></tr></thead>
+            <tbody id="ordersBody"></tbody>
+          </table>
+          <div class="empty-state" id="emptyState" style="display:none;"><div class="icon">📋</div><h3>No orders yet</h3><p>Orders placed via WhatsApp checkout will appear here.</p></div>
+        </div>
       </div>
 
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>Order #</th><th>Date</th><th>Items</th><th>Delivery</th><th>Total</th><th>Status</th><th></th></tr>
-          </thead>
-          <tbody id="ordersBody"></tbody>
-        </table>
-        <div class="empty-state" id="emptyState" style="display:none;">
-          <div class="icon">📋</div>
-          <h3>No orders yet</h3>
-          <p>Orders placed via WhatsApp checkout will appear here.</p>
+      <!-- INVENTORY TAB -->
+      <div class="tab-content" id="tab-inventory">
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon">🏷️</div><div class="stat-label">Total Products</div><div class="stat-value" id="statProducts">0</div></div>
+          <div class="stat-card"><div class="stat-icon">📂</div><div class="stat-label">Categories</div><div class="stat-value" id="statCategories">0</div></div>
+          <div class="stat-card"><div class="stat-icon">⚠️</div><div class="stat-label">Low Stock (≤5)</div><div class="stat-value" id="statLowStock">0</div></div>
+          <div class="stat-card"><div class="stat-icon">🚫</div><div class="stat-label">Out of Stock</div><div class="stat-value" id="statOutOfStock">0</div></div>
+        </div>
+        <div class="toolbar">
+          <div class="toolbar-search">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input type="text" id="prodSearchInput" placeholder="Search products…" oninput="renderProducts()" />
+          </div>
+          <select id="prodCategoryFilter" onchange="renderProducts()"><option value="All">All Categories</option></select>
+          <button class="btn btn-primary btn-sm" onclick="openProductModal()">＋ Add Product</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th style="width:50px"></th><th>Name</th><th>Category</th><th>Price</th><th>Qty</th><th>Badge</th><th>Featured</th><th></th></tr></thead>
+            <tbody id="productsBody"></tbody>
+          </table>
+          <div class="empty-state" id="emptyProducts" style="display:none;"><div class="icon">🏷️</div><h3>No products</h3><p>Add your first product to get started.</p></div>
         </div>
       </div>
     </div>
@@ -198,6 +256,33 @@
       <div style="display:flex;gap:10px">
         <button class="btn btn-ghost btn-sm" onclick="closeImportModal()" style="flex:1">Cancel</button>
       </div>
+    </div>
+  </div>
+
+  <!-- PRODUCT MODAL -->
+  <div class="modal-bg prod-modal" id="productModal" onclick="if(event.target===this)closeProductModal()">
+    <div class="modal-box">
+      <h2 id="prodModalTitle">＋ Add New Product</h2>
+      <p id="prodModalDesc">Fill in the product details below.</p>
+      <form onsubmit="return false;" style="margin-top:12px;">
+        <div class="form-grid">
+          <div class="form-field"><label>Product Name *</label><input type="text" id="pf_name" required placeholder="e.g. Silicone Sponge" /></div>
+          <div class="form-field"><label>Category *</label><input type="text" id="pf_category" required placeholder="e.g. Kitchen" /></div>
+          <div class="form-field"><label>Price (Rs.) *</label><input type="number" id="pf_price" required min="1" placeholder="299" /></div>
+          <div class="form-field"><label>Old Price (Rs.)</label><input type="number" id="pf_oldPrice" min="0" placeholder="499 (optional)" /></div>
+          <div class="form-field"><label>Quantity</label><input type="number" id="pf_quantity" min="0" value="0" /></div>
+          <div class="form-field"><label>Badge</label><select id="pf_badge"><option value="">None</option><option value="sale">Sale</option><option value="new">New</option><option value="hot">Hot</option></select></div>
+          <div class="form-field full"><label>Image URL *</label><input type="url" id="pf_img" required placeholder="https://cdn.shopify.com/..." /></div>
+          <div class="form-field full"><label>Short Description *</label><input type="text" id="pf_desc" required placeholder="Brief one-line description" /></div>
+          <div class="form-field full"><label>Detailed HTML (optional)</label><textarea id="pf_bodyHtml" placeholder="Rich HTML body content…"></textarea></div>
+          <div class="form-field full" style="flex-direction:row;align-items:center;gap:8px;"><input type="checkbox" id="pf_featured" style="width:18px;height:18px;" /><label style="margin:0;">Show on Homepage (Featured)</label></div>
+        </div>
+        <input type="hidden" id="pf_editId" value="" />
+        <div style="display:flex;gap:10px;margin-top:20px;">
+          <button class="btn btn-ghost btn-sm" type="button" onclick="closeProductModal()" style="flex:1">Cancel</button>
+          <button class="btn btn-primary btn-sm" type="button" onclick="saveProductForm()" style="flex:1">💾 Save Product</button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -240,14 +325,11 @@
     }
     function logout(){
       if(unsubscribeListener) unsubscribeListener();
+      if(prodListener) prodListener();
       sessionStorage.removeItem('trevoAdmin');
       location.reload();
     }
-    function showDashboard(){
-      document.getElementById('loginScreen').style.display='none';
-      document.getElementById('dashboard').style.display='block';
-      initDataSource();
-    }
+    // showDashboard() is defined below with loadProducts() integrated
 
     // --- Loader ---
     function showLoader(msg='Loading…'){
@@ -493,8 +575,188 @@
       return result;
     }
 
+    // --- Tab Switching ---
+    function switchTab(tab, btn) {
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-' + tab).classList.add('active');
+      btn.classList.add('active');
+      if (tab === 'inventory' && allProducts.length === 0) loadProducts();
+    }
+
+    // --- Inventory Management ---
+    let allProducts = [];
+    let prodListener = null;
+
+    async function loadProducts() {
+      if (!firebaseReady) return;
+      showLoader('Loading products…');
+      // Real-time listener for products
+      if (prodListener) prodListener();
+      let firstLoad = true;
+      prodListener = db.collection(PRODUCTS_COLLECTION)
+        .orderBy('id')
+        .onSnapshot(snapshot => {
+          allProducts = snapshot.docs.map(doc => doc.data());
+          if (firstLoad) { hideLoader(); firstLoad = false; }
+          renderProducts();
+          updateProdCategoryFilter();
+        }, err => {
+          hideLoader();
+          console.error('Products listener error:', err);
+        });
+    }
+
+    function updateProdCategoryFilter() {
+      const cats = ['All', ...new Set(allProducts.map(p => p.category).filter(Boolean))];
+      const sel = document.getElementById('prodCategoryFilter');
+      const cur = sel.value;
+      sel.innerHTML = cats.map(c => '<option value="' + c + '"' + (c === cur ? ' selected' : '') + '>' + c + '</option>').join('');
+    }
+
+    function renderProducts() {
+      const search = (document.getElementById('prodSearchInput').value || '').toLowerCase();
+      const catFilter = document.getElementById('prodCategoryFilter').value;
+      let prods = [...allProducts];
+
+      // Stats (unfiltered)
+      document.getElementById('statProducts').textContent = prods.length;
+      document.getElementById('statCategories').textContent = new Set(prods.map(p => p.category)).size;
+      document.getElementById('statLowStock').textContent = prods.filter(p => (p.quantity || 0) > 0 && (p.quantity || 0) <= 5).length;
+      document.getElementById('statOutOfStock').textContent = prods.filter(p => (p.quantity || 0) === 0).length;
+
+      // Filter
+      if (catFilter !== 'All') prods = prods.filter(p => p.category === catFilter);
+      if (search) prods = prods.filter(p => p.name.toLowerCase().includes(search) || (p.category || '').toLowerCase().includes(search));
+
+      const tbody = document.getElementById('productsBody');
+      const empty = document.getElementById('emptyProducts');
+
+      if (!prods.length) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
+      empty.style.display = 'none';
+
+      tbody.innerHTML = prods.map(p => {
+        const badgeHtml = p.badge ? '<span class="prod-badge prod-badge-' + p.badge + '">' + p.badge + '</span>' : '<span style="color:var(--text-light);font-size:.78rem;">—</span>';
+        const qty = p.quantity || 0;
+        const qtyStyle = qty === 0 ? 'color:#dc2626;font-weight:700' : qty <= 5 ? 'color:#92400e;font-weight:600' : '';
+        return '<tr>' +
+          '<td><img class="prod-img-thumb" src="' + (p.img || '') + '" alt="" onerror="this.style.display=\'none\'" /></td>' +
+          '<td style="font-weight:600;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="' + (p.name || '') + '">' + (p.name || '') + '</td>' +
+          '<td>' + (p.category || '') + '</td>' +
+          '<td style="font-weight:600;">Rs. ' + (p.price || 0).toLocaleString() + (p.oldPrice ? '<br><span style="color:var(--text-light);text-decoration:line-through;font-size:.78rem;font-weight:400;">Rs. ' + p.oldPrice.toLocaleString() + '</span>' : '') + '</td>' +
+          '<td><input class="qty-inline" type="number" min="0" value="' + qty + '" style="' + qtyStyle + '" onchange="updateProductQty(' + p.id + ', this.value)" /></td>' +
+          '<td>' + badgeHtml + '</td>' +
+          '<td style="text-align:center"><span class="featured-dot ' + (p.featured ? 'yes' : 'no') + '" title="' + (p.featured ? 'Featured' : 'Not featured') + '"></span></td>' +
+          '<td><button class="btn btn-ghost btn-sm" onclick="editProduct(' + p.id + ')" title="Edit" style="padding:6px 10px;">✏️</button><button class="delete-btn" onclick="deleteProduct(' + p.id + ')" title="Delete">🗑</button></td>' +
+          '</tr>';
+      }).join('');
+    }
+
+    async function updateProductQty(productId, val) {
+      const qty = parseInt(val) || 0;
+      if (firebaseReady) {
+        await firestoreUpdateProduct(productId, { quantity: qty });
+      }
+    }
+
+    // --- Product Modal ---
+    function openProductModal(editId) {
+      document.getElementById('pf_editId').value = '';
+      document.getElementById('pf_name').value = '';
+      document.getElementById('pf_category').value = '';
+      document.getElementById('pf_price').value = '';
+      document.getElementById('pf_oldPrice').value = '';
+      document.getElementById('pf_quantity').value = '0';
+      document.getElementById('pf_badge').value = '';
+      document.getElementById('pf_img').value = '';
+      document.getElementById('pf_desc').value = '';
+      document.getElementById('pf_bodyHtml').value = '';
+      document.getElementById('pf_featured').checked = false;
+      document.getElementById('prodModalTitle').textContent = '＋ Add New Product';
+      document.getElementById('prodModalDesc').textContent = 'Fill in the product details below.';
+      document.getElementById('productModal').classList.add('open');
+    }
+
+    function editProduct(id) {
+      const p = allProducts.find(x => x.id === id);
+      if (!p) return;
+      document.getElementById('pf_editId').value = id;
+      document.getElementById('pf_name').value = p.name || '';
+      document.getElementById('pf_category').value = p.category || '';
+      document.getElementById('pf_price').value = p.price || '';
+      document.getElementById('pf_oldPrice').value = p.oldPrice || '';
+      document.getElementById('pf_quantity').value = p.quantity || 0;
+      document.getElementById('pf_badge').value = p.badge || '';
+      document.getElementById('pf_img').value = p.img || '';
+      document.getElementById('pf_desc').value = p.desc || '';
+      document.getElementById('pf_bodyHtml').value = p.bodyHtml || '';
+      document.getElementById('pf_featured').checked = !!p.featured;
+      document.getElementById('prodModalTitle').textContent = '✏️ Edit Product';
+      document.getElementById('prodModalDesc').textContent = 'Update product details for "' + p.name + '".';
+      document.getElementById('productModal').classList.add('open');
+    }
+
+    function closeProductModal() {
+      document.getElementById('productModal').classList.remove('open');
+    }
+
+    async function saveProductForm() {
+      const name = document.getElementById('pf_name').value.trim();
+      const category = document.getElementById('pf_category').value.trim();
+      const price = parseInt(document.getElementById('pf_price').value);
+      const img = document.getElementById('pf_img').value.trim();
+      const desc = document.getElementById('pf_desc').value.trim();
+      if (!name || !category || !price || !img || !desc) { alert('Please fill in all required fields.'); return; }
+
+      const editId = document.getElementById('pf_editId').value;
+      const oldPriceVal = parseInt(document.getElementById('pf_oldPrice').value) || null;
+      const badge = document.getElementById('pf_badge').value || null;
+
+      let product;
+      if (editId) {
+        // Editing existing product — preserve existing fields
+        const existing = allProducts.find(x => x.id === parseInt(editId));
+        product = { ...(existing || {}),
+          name, category, price, oldPrice: oldPriceVal, img, desc,
+          badge, featured: document.getElementById('pf_featured').checked,
+          quantity: parseInt(document.getElementById('pf_quantity').value) || 0,
+          bodyHtml: document.getElementById('pf_bodyHtml').value || '',
+          images: (existing && existing.images) ? existing.images : [img]
+        };
+      } else {
+        // New product
+        const nextId = await firestoreNextProductId();
+        product = {
+          id: nextId, name, category, price, oldPrice: oldPriceVal, img, desc,
+          badge, featured: document.getElementById('pf_featured').checked,
+          quantity: parseInt(document.getElementById('pf_quantity').value) || 0,
+          bodyHtml: document.getElementById('pf_bodyHtml').value || '',
+          images: [img]
+        };
+      }
+
+      showLoader('Saving product…');
+      await firestoreSaveProduct(product);
+      hideLoader();
+      closeProductModal();
+    }
+
+    async function deleteProduct(id) {
+      const p = allProducts.find(x => x.id === id);
+      if (!confirm('Delete "' + (p ? p.name : id) + '"? This cannot be undone.')) return;
+      showLoader('Deleting product…');
+      await firestoreDeleteProduct(id);
+      hideLoader();
+    }
+
     // --- Init ---
-    if(sessionStorage.getItem('trevoAdmin')==='1') showDashboard();
+    function showDashboard() {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      initDataSource();
+      loadProducts(); // Also load products for inventory tab
+    }
+    if (sessionStorage.getItem('trevoAdmin') === '1') showDashboard();
   </script>
 </body>
 </html>

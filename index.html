@@ -2122,6 +2122,18 @@
 
   <div class="toast-container" id="toastContainer"></div>
 
+  <!-- Store Loading Overlay -->
+  <div id="storeLoader" style="position:fixed;inset:0;background:linear-gradient(145deg,#faf5fc 0%,#fff 50%,#f3e8f7 100%);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;transition:opacity .4s ease;">
+    <img src="logo.png" alt="Trevo" style="height:80px;mix-blend-mode:multiply;animation:fadeUp .4s ease;" />
+    <div style="width:46px;height:46px;border:4px solid #F3E8F7;border-top-color:#7B2D8B;border-radius:50%;animation:spin .75s linear infinite;"></div>
+    <div style="color:#6b5478;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:500;">Loading store…</div>
+  </div>
+  <style>
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+  </style>
+
+
   <!-- HOME -->
   <div class="page active" id="page-home">
     <section class="hero">
@@ -2671,418 +2683,8 @@
   <script src="firebase-config.js"></script>
 
   <script>
-    const PRODUCTS = [
-      {
-        id: 1, name: 'Non-Slip Textured Table Protector Sheet', category: 'Home Essentials', price: 249, oldPrice: 379, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-12-01at5.46.13PM_1.jpg?v=1764598275', desc: 'Waterproof, oilproof & heat-resistant surface cover / drawer liner.', badge: 'sale', featured: true, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-12-01at5.46.13PM_1.jpg?v=1764598275', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-12-01at5.46.13PM_2.jpg?v=1764598275', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-12-01at5.46.13PM_3.jpg?v=1764598275', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-12-01at5.46.13PM.jpg?v=1764598275', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-12-01at5.46.14PM_1.jpg?v=1764598275', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-12-01at5.46.14PM.jpg?v=1764598275', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-12-01at5.46.15PM_1.jpg?v=1764598275', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-12-01at5.46.15PM_2.jpg?v=1764598275', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-12-01at5.46.15PM.jpg?v=1764598275', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-12-01at5.46.16PM_1.jpg?v=1764598275', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-12-01at5.46.16PM.jpg?v=1764598275', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-12-01at5.47.51PM_1.jpg?v=1764598275'], bodyHtml: `<p>Waterproof, Oilproof &amp; Heat-Resistant Surface Cover / Drawer Liner<br></p>
-<p>Protect your furniture with style using our <strong>Non-Slip Textured Table Protector Sheet</strong>, designed to keep your surfaces clean, safe, and scratch-free. Made with high-quality waterproof material, this multipurpose sheet is perfect for <strong>tables, kitchen shelves, drawers, cabinets, countertops, and dining areas</strong>.</p>
-<p>The elegant textured pattern not only enhances grip but also adds a premium look to your home. Easy to cut, install, and clean — making it a must-have for every household.</p>
-<h3><strong>Key Features</strong></h3>
-<ul>
-<li>
-<p>✔️ <strong>Non-slip textured design</strong> for extra grip</p>
-</li>
-<li>
-<p>✔️ <strong>Waterproof, oilproof &amp; stain-resistant</strong></p>
-</li>
-<li>
-<p>✔️ <strong>Heat-resistant material</strong> protects your table</p>
-</li>
-<li>
-<p>✔️ Ideal for <strong>kitchen shelves, drawers, fridge racks, tables &amp; cabinets</strong></p>
-</li>
-<li>
-<p>✔️ <strong>Easy to cut &amp; install</strong> according to size</p>
-</li>
-<li>
-<p>✔️ Durable and reusable material</p>
-</li>
-</ul>
-<h3><strong>Why You’ll Love It</strong></h3>
-<p>This sheet keeps your furniture new-looking while offering long-lasting protection against spills, scratches, and daily wear. Perfect for organizing spaces while improving overall aesthetics.<br></p>
-<h3><strong>Package include: 1 Roll</strong></h3>` },
-      {
-        id: 2, name: 'Leaf Shaped Serving Bowl', category: 'Kitchen', price: 129, oldPrice: 249, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-11-30at9.33.15PM.jpg?v=1764597854', desc: 'Lightweight & stylish tableware for snacks, salads & sauces. Pack of 2.', badge: 'sale', featured: true, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-11-30at9.33.15PM.jpg?v=1764597854', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageDec1_2025_06_30_53PM.png?v=1764597854', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageDec1_2025_06_49_52PM.png?v=1764597854', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-11-30at9.32.56PM.jpg?v=1764597854', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-12-01at9.41.21AM.jpg?v=1764597058'], bodyHtml: `<p>Lightweight, Durable &amp; Stylish Tableware for Snacks, Salads, Sauces<br>Bring natural elegance to your dining table with this <strong>Leaf Shaped Serving Bowl</strong>, designed to add a fresh and modern touch to your kitchen. Made from durable, lightweight, and eco-friendly material, this bowl is perfect for serving <strong>snacks, fruits, sauces, dips, dry items, and small side dishes</strong>.</p>
-<p>The smooth matte finish and realistic leaf pattern make it a beautiful addition to any home décor setting. Ideal for daily use, picnics, parties, and gift hampers.</p>
-<h3><strong>Key Features</strong></h3>
-<ul>
-<li>
-<p>🌿 <strong>Eco-friendly &amp; BPA-free material</strong></p>
-</li>
-<li>
-<p>🍃 <strong>Unique leaf design</strong> adds a stylish nature-inspired touch</p>
-</li>
-<li>
-<p>🥗 Perfect for <strong>snacks, sauces, dips, salads &amp; sides</strong></p>
-</li>
-<li>
-<p>💧 Easy to clean and maintain</p>
-</li>
-<li>
-<p>🏠 Suitable for kitchen, dining table, and serving guests</p>
-</li>
-<li>
-<p>🎁 Great for gifting or home décor use</p>
-</li>
-</ul>
-<h3><strong>Why You’ll Love It</strong></h3>
-<p>This serving bowl is not only visually appealing but also practical, durable, and versatile — making it an essential addition to your tableware collection.<br><br></p>
-<h3><strong>Package Include: 2 * Serving Bowls</strong></h3>
-<p> </p>` },
-      {
-        id: 3, name: 'Stainless Steel Multi-Slot Organizer Rack', category: 'Kitchen', price: 249, oldPrice: 379, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-11-30at4.37.36PM_1.jpg?v=1764506585', desc: 'Plate, lid & cutting board holder. Rust-free durable design.', badge: 'new', featured: true, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-11-30at4.37.36PM_1.jpg?v=1764506585', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-11-30at4.37.36PM.jpg?v=1772951491'], bodyHtml: `<p><span>Keep your kitchen clean and organized with this </span><b><span>Stainless Steel Multi-Slot Organizer Rack</span></b><span>. Designed with multiple evenly spaced slots, it securely holds </span><b><span>plates, pot lids, baking trays, cutting boards, and chopping boards</span></b><span> in an upright position.</span><span></span></p>
-<p><span>Its strong stainless steel structure ensures </span><b><span>rust-free durability</span></b><span>, while the open-frame design allows for </span><b><span>quick drying and easy cleaning</span></b><span>. Perfect for kitchen shelves, countertops, and inside cabinets.</span><span></span></p>
-<p><b><span>Features:</span></b><span><br></span><span><span>• Durable Stainless Steel Build</span></span><span><br></span><span><span>• Multiple Slots for Organized Storage</span></span><span><br></span><span><span>• Perfect for Plates, Lids, Trays &amp; Cutting Boards</span></span><span><br></span><span><span>• Rust-Resistant &amp; Easy to Clean</span></span><span><br></span><span><span>• Space-Saving Design for Cabinets &amp; Countertops</span></span><span></span></p>
-<p><b><span>Package Includes:</span></b><span><br></span><span><span>• 1 × Stainless Steel Organizer Rack</span></span><span></span></p>` },
-      {
-        id: 4, name: 'USB Rechargeable Electric Lighter', category: 'Home Essentials', price: 499, oldPrice: 749, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/20251130_1626_USBLighterCharging_remix_01kba85k7he9c8rsqsj979dmvc.png?v=1764506413', desc: 'Flexible neck, windproof & flameless. No gas refills needed.', badge: 'hot', featured: true, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/20251130_1626_USBLighterCharging_remix_01kba85k7he9c8rsqsj979dmvc.png?v=1764506413', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/20251130_1626_USBLighterDemo_remix_01kba84gn1ep4rzbhc7eq7sjt5.png?v=1764506413', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/20251130_1623_ElectricLighterDisplay_remix_01kba80f9ef4ztz674smrn3w7k.png?v=1764506413', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/20251130_1623_ElectricLighterDisplay_remix_01kba80f9gf7w8pvbq6r0a7h1e.png?v=1764506413'], bodyHtml: `<p><span>Light your stove safely and comfortably with this </span><b><span>USB Rechargeable Electric Lighter</span></b><span>. Designed with a </span><b><span>flexible 360° bendable neck</span></b><span>, it lets you ignite gas burners without bringing your hands close to the flame. Perfect for gas stoves, candles, BBQ grills, and outdoor use.</span><span></span></p>
-<p><span>This lighter uses </span><b><span>flameless plasma arc technology</span></b><span>, making it completely </span><b><span>windproof</span></b><span>, eco-friendly, and safer than traditional gas lighters. Just plug it into any USB port to recharge — no gas refills needed.</span><span></span></p>
-<p><b><span>Features:</span></b><span><br></span><span><span>• USB Rechargeable – long-lasting battery</span></span><span><br></span><span><span>• Windproof &amp; Flameless Technology</span></span><span><br></span><span><span>• Flexible 360° Neck for easy reach</span></span><span><br></span><span><span>• Safe, secure ignition</span></span><span><br></span><span><span>• Ideal for stoves, candles, BBQ, grills, and camping</span></span><span></span></p>
-<p><b><span>Package Includes:</span></b><span><br></span><span><span>• 1 × USB Rechargeable Lighter</span></span><span><br></span><span><span>• 1 × Charging Cable</span></span><span></span></p>
-<p><span> </span></p>` },
-      {
-        id: 5, name: 'Rechargeable Mini Heat Sealer', category: 'Kitchen', price: 499, oldPrice: 879, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-11-30at4.39.41PM.jpg?v=1764506031', desc: 'Portable bag resealer with USB charging. Keep food fresh.', badge: 'sale', featured: true, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-11-30at4.39.41PM.jpg?v=1764506031', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Nov_22_2025_02_58_25_PM.png?v=1764506075', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Nov_21_2025_04_45_04_PM.png?v=1764506076', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-11-30at4.39.41PM_1.jpg?v=1764506031', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Nov_22_2025_02_09_31_PM.png?v=1764506074', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Nov_22_2025_02_16_47_PM.png?v=1764506076'], bodyHtml: `<p><span>Keep your snacks, spices, and dried foods fresh with this </span><b><span>Rechargeable Mini Heat Sealer</span></b><span>. It instantly reseals plastic bags with a strong, airtight seal—perfect for sealing chips, dried fruits, spices, lentils, and freezer bags.</span><span></span></p>
-<p><span>The compact, handheld design makes it super easy to use: just press, slide, and seal. With </span><b><span>USB rechargeable convenience</span></b><span>, you don’t need batteries—simply charge it and it’s ready whenever you need it.</span><span></span></p>
-<p><span>Ideal for kitchen storage, travel, home organization, and small business packaging.</span><span></span></p>
-<p><b><span>Features:</span></b><span><br></span><span><span>• Rechargeable Mini Heat Sealer (USB Charging)</span></span><span><br></span><span><span>• Creates an airtight, leak-proof seal in seconds</span></span><span><br></span><span><span>• Perfect for snacks, spices, dried foods &amp; leftovers</span></span><span><br></span><span><span>• Portable, lightweight &amp; easy to store</span></span><span><br></span><span><span>• Safe heating plate with superior sealing strength</span></span><span></span></p>
-<p><b><span>Package Includes:</span></b><span><br></span><span><span>• 1 × Rechargeable Mini Heat Sealer</span></span><span><br></span><span><span>• 1 × USB Charging Cable</span></span><span></span></p>` },
-      {
-        id: 6, name: 'Dish Washing Organizer Set', category: 'Kitchen', price: 599, oldPrice: 1099, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/20251130_1714_DishwashingOrganizerSet_remix_01kbaax8fyeecsyn0za9ejm2kq.png?v=1764505853', desc: 'Large capacity sink caddy with pump ring holder.', badge: 'sale', featured: true, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/20251130_1714_DishwashingOrganizerSet_remix_01kbaax8fyeecsyn0za9ejm2kq.png?v=1764505853', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/20251130_1714_DishwashingOrganizerShowcase_remix_01kbaay3qafbdszhvzb8kxe557.png?v=1764505853', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-10-25at3.21.12PM_1.jpg?v=1762772824', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-10-25at3.20.19PM_1.jpg?v=1762772824', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsAppImage2025-10-25at3.20.18PM.jpg?v=1762772824'], bodyHtml: `<p><span>Large Capacity Sink Caddy with Pump Ring Holder</span></p>
-<p><span>Keep your sink area neat, clean, and fully organized with this </span><b><span>Dish Washing Organizer Set</span></b><span>. Designed with </span><b><span>three large-capacity compartments</span></b><span>, it easily holds dishwashing liquid, sponges, brushes, scrubbers, and other cleaning essentials.</span><span></span></p>
-<p><span>The center features a </span><b><span>pump-style ring holder</span></b><span> with a transparent lid—perfect for storing liquid soap, making refilling easy and mess-free. The wide, deep compartments prevent items from slipping out and help maintain a tidy kitchen counter.</span><span></span></p>
-<p><span>Made from durable, easy-to-clean plastic, this sink caddy is ideal for everyday use in kitchens, bathrooms, and utility areas.</span><span></span></p>
-<p><b><span>Features:</span></b><span><br></span><span><span>• 3 Large Compartments for sponges, brushes &amp; cleaning tools</span></span><span><br></span><span><span>• Pump Ring Holder with transparent lid for dishwashing liquid</span></span><span><br></span><span><span>• Deep and wide container design for large storage volume</span></span><span><br></span><span><span>• Keeps sink area neat, clean &amp; organized</span></span><span><br></span><span><span>• Durable, waterproof &amp; easy to wash</span></span><span><br></span><span><span>• Suitable for kitchen sink, bathroom sink &amp; utility counters</span></span><span></span></p>
-<p><b><span>Package Includes:</span></b><span><br></span><span><span>• 1 × Dish Washing Organizer Set (with pump ring holder)</span></span><span></span></p>` },
-      {
-        id: 7, name: 'Adjustable Drawer Partition Dividers', category: 'Storage', price: 249, oldPrice: 389, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/20251130_1659_OrganizedDrawerDividers_remix_01kbaa0ey7ecfvtfbcatdv2y56.png?v=1764505606', desc: '4-in-1 pack. Create custom-sized sections in any drawer.', badge: 'new', featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/20251130_1659_OrganizedDrawerDividers_remix_01kbaa0ey7ecfvtfbcatdv2y56.png?v=1764505606', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/20251130_1700_Pink_Dividers_on_Table_remix_01kbaa3n8jfe786tyb7tscft1h.png?v=1764506894', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/20251130_1703_PinkDrawerDividersLayout_remix_01kbaa85dafchb9s2b9351yg84.png?v=1764506894', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/20251130_1700_DrawerOrganizationTransformation_remix_01kbaa2ag0ex6s50qqb18vfc5t.png?v=1764506894', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/20251130_1657_PinkDividerStrips_remix_01kba9ye7weddbehdkz3rctqfb.png?v=1764506894', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/20251130_1657_PinkDrawerDividers_remix_01kba9xnkdf3r83vw4c7bbbxzv.png?v=1764506894'], bodyHtml: `<p><strong>Multi-Section Organizer for Home &amp; Kitchen<br></strong><span>Keep every drawer neat and perfectly organized with these </span><b><span>Adjustable Drawer Partition Dividers</span></b><span>. Each strip features flexible notches that easily interlock, allowing you to create </span><b><span>custom-sized sections</span></b><span> in any drawer. Perfect for organizing makeup, jewelry, baby items, socks, undergarments, office supplies, kitchen tools, and more.</span><span></span></p>
-<p><span>Made from high-quality, durable plastic, these dividers fit smoothly inside drawers without scratching. You can </span><b><span>expand, shorten, or rearrange</span></b><span> them anytime to match your storage needs.</span><span></span></p>
-<p><span>Ideal for home, office, dressing table, kitchen cabinets, vanity drawers, and kids’ storage spaces.</span><span></span></p>
-<p><b><span>Features:</span></b><span><br></span><span><span>• Adjustable &amp; customizable divider strips</span></span><span><br></span><span><span>• Create multiple sections in any drawer</span></span><span><br></span><span><span>• Perfect for makeup, jewelry, socks, stationery &amp; accessories</span></span><span><br></span><span><span>• Strong, durable plastic</span></span><span><br></span><span><span>• Smooth edges – safe for all drawers</span></span><span><br></span><span><span>• Easy to install, remove &amp; rearrange</span></span><span></span></p>
-<p><b><span>Package Includes:</span></b><span><br></span><span><span>• </span></span><span>Four </span><span>Adjustable Divider Strips</span><span></span></p>` },
-      {
-        id: 8, name: 'Premium Foldable Metal Basket – Golden Finish', category: 'Home Essentials', price: 1199, oldPrice: 2099, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Nov_22_2025_04_13_28_PM.png?v=1764442540', desc: 'Elegant golden steel basket for kitchen & home storage.', badge: 'hot', featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Nov_22_2025_04_13_28_PM.png?v=1764442540', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Nov_22_2025_04_24_01_PM.png?v=1764442542', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Nov_22_2025_04_20_11_PM.png?v=1764442538', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Nov_22_2025_04_25_47_PM.png?v=1764442539', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Nov_22_2025_04_17_23_PM.png?v=1764442543', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Nov_22_2025_04_29_18_PM.png?v=1764442541', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Nov_22_2025_04_25_29_PM.png?v=1764442544'], bodyHtml: `<p>Add luxury and organization to your home with our <strong>Foldable Golden Steel Basket</strong>, designed to store your essentials with style. Made from <strong>high-quality stainless steel</strong> and finished in a <strong>beautiful golden coating</strong>, this basket is both <strong>durable and elegant</strong>.</p>
-<p>The <strong>foldable design</strong> allows you to expand or collapse the basket within seconds, making it perfect for <strong>saving space</strong> when not in use. Lightweight yet sturdy, it is ideal for <strong>kitchens, bathrooms, dressing tables, offices, pantries, and dining areas</strong>.</p>
-<p>Use it for <strong>fruits, vegetables, snacks, napkins, cosmetics, towels, cutlery, table items, or daily essentials</strong>. Its stylish golden look instantly enhances any space.<br></p>
-<h2><strong>Key Features</strong></h2>
-<ul>
-<li>
-<p><strong>Premium Golden Finish</strong> adds elegance to any room</p>
-</li>
-<li>
-<p><strong>Foldable Design</strong> – easy to open, close &amp; store</p>
-</li>
-<li>
-<p><strong>Durable Stainless Steel Body</strong></p>
-</li>
-<li>
-<p><strong>Multi-purpose Storage</strong> for kitchen, dressing, office, bathroom &amp; more</p>
-</li>
-<li>
-<p><strong>Ventilated Steel Structure</strong> keeps contents fresh and dry</p>
-</li>
-<li>
-<p><strong>Lightweight &amp; Space-Saving</strong></p>
-</li>
-<li>
-<p><strong>Easy to Clean and Long-lasting</strong><strong></strong><strong></strong></p>
-<h2><strong>Perfect For</strong></h2>
-<ul>
-<li>
-<p>Fruit basket</p>
-</li>
-<li>
-<p>Vegetable storage</p>
-</li>
-<li>
-<p>Snack organizer</p>
-</li>
-<li>
-<p>Bathroom accessories</p>
-</li>
-<li>
-<p>Dressing table items</p>
-</li>
-<li>
-<p>Cutlery &amp; napkin holder</p>
-</li>
-<li>
-<p>Countertop display</p>
-</li>
-<li>
-<p>Gift hampers</p>
-</li>
-</ul>
-</li>
-</ul>` },
-      {
-        id: 9, name: 'Vintage Metal Tray – 3 Bowl Serving Organizer', category: 'Kitchen', price: 1999, oldPrice: 2599, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Nov_29_2025_10_39_47_PM.png?v=1764438014', desc: 'Condiment & serving organizer. Available in Cycle & Trolley shapes.', badge: 'new', featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Nov_29_2025_10_39_47_PM.png?v=1764438014', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Nov_29_2025_10_37_23_PM.png?v=1764438014', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageNov20_2025_11_27_58PM.png?v=1764437995', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageNov20_2025_11_32_05PM.png?v=1764437995', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageNov20_2025_11_35_18PM.png?v=1764437995'], bodyHtml: `<p>Choose your favorite style — <strong>Cycle</strong> or <strong>Trolley</strong>!<br>Both elegant serving trays come with <strong>three vibrant bowls</strong> and are perfect for serving <strong>sauces, dips, pickles, snacks, spices, and tea-time items</strong>. Made with a premium metal frame, they add style and convenience to any dining setup.</p>
-<p>Perfect for home use, restaurants, buffets, and gifting.<br></p>
-<h1><strong>Key Features (Cycle + Trolley Tray Variants)</strong></h1>
-<ul>
-<li>
-<p><strong>2 Attractive Shapes Available</strong>: Cycle &amp; Trolley</p>
-</li>
-<li>
-<p><strong>3 Multi-Use Bowls</strong> to serve sauces, pickles, snacks, spices, dips &amp; more</p>
-</li>
-<li>
-<p><strong>Durable Metal Construction</strong> for long-lasting performance</p>
-</li>
-<li>
-<p><strong>Modern &amp; Decorative Design</strong> suitable for table display</p>
-</li>
-<li>
-<p><strong>Easy to Clean, Easy to Carry</strong></p>
-</li>
-<li>
-<p><strong>Perfect for Home, Cafés, Restaurants, Tea-Time &amp; Parties</strong></p>
-</li>
-<li>
-<p><strong>Ideal for Gifting, Hampers &amp; Home Decoration</strong></p>
-</li>
-</ul>` },
-      {
-        id: 10, name: 'Trevo Sink Splash Guard', category: 'Kitchen', price: 1099, oldPrice: 1499, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageNov18_2025_09_58_09PM.png?v=1764437410', desc: 'Keep your kitchen dry & mess-free. Flexible & easy to install.', badge: 'new', featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageNov18_2025_09_58_09PM.png?v=1764437410', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageNov18_2025_10_25_01PM.png?v=1764437410', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageNov18_2025_10_32_57PM.png?v=1764437410', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageNov18_2025_10_37_51PM.png?v=1764437410', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageNov18_2025_10_42_14PM.png?v=1764437410', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageNov18_2025_10_46_49PM.png?v=1764437410', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageNov18_2025_10_46_54PM.png?v=1764437410'], bodyHtml: `<p><strong>Keep Your Kitchen Dry &amp; Mess-Free!<br></strong>Say goodbye to water splashes, messy countertops, and constant wiping!<br>Trevo’s Premium Sink Splash Guard is designed to give you a clean, hygienic, and stress-free washing experience. Whether you are washing dishes, fruits, vegetables, or letting kids wash their hands—this splash guard keeps everything neat and controlled.<br></p>
-<h2><strong>Key Features</strong></h2>
-<p><strong>🚫 No More Water Mess</strong><br>Blocks water splashes instantly, keeping countertops dry and clean.</p>
-<p><strong>🧽 Multipurpose Use</strong><br>Perfect for dishwashing, washing fruits, baby bottles, utensils, or during kids’ hand washing.</p>
-<p><strong>💪 Strong &amp; Durable Material</strong><br>High-quality soft rubber + anti-slip design ensures long-lasting performance.</p>
-<p><strong>🧲 Flexible &amp; Easy to Install</strong><br>Fits almost all sinks. Just place, adjust, and use—no tools required!</p>
-<p><strong>💚 Hygienic &amp; Safe</strong><br>Prevents bacteria spread by keeping water contained inside the sink.</p>
-<p><strong>🧼 Easy to Clean</strong><br>Simply rinse with water or wipe with a cloth. Dries quickly.</p>
-<h2><strong>Product Specifications</strong></h2>
-<ul>
-<li>
-<p><strong>Material:</strong> Soft Silicone / Flexible Rubber</p>
-</li>
-<li>
-<p><strong>Design:</strong> Foldable, Anti-Splash, Anti-Slip</p>
-</li>
-<li>
-<p><strong>Use Case:</strong> Kitchen Sinks, Bathroom Sinks, Basin Areas</p>
-</li>
-<li>
-<p><strong>Available Colors:</strong> Light Green (Trevo Collection)</p>
-</li>
-<li>
-<p><strong>Size:</strong> Standard – Fits most sink edge</p>
-</li>
-</ul>
-<p><strong><br></strong></p>` },
-      {
-        id: 11, name: 'Self-Adhesive Wall Hook (Pack of 2)', category: 'Home Essentials', price: 169, oldPrice: 289, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageOct10_2025_04_29_57PM.png?v=1761223778', desc: 'No drills, no damage. Holds up to 10 kg. Waterproof & rust-proof.', badge: 'sale', featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageOct10_2025_04_29_57PM.png?v=1761223778', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageOct10_2025_04_37_47PM.png?v=1761223779', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageOct10_2025_04_54_27PM.png?v=1761223779', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageOct10_2025_04_56_16PM.png?v=1761223779', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageOct10_2025_05_21_21PM.png?v=1761223779', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageOct10_2025_05_23_23PM.png?v=1761223779'], bodyHtml: `<p>No drills, no damage — just stick, hang, and enjoy!<br>The <strong>Trevo Transparent Wall Hook</strong> is your go-to home essential for effortless hanging and clean aesthetics. Designed with a <strong>strong adhesive pad</strong> and <strong>stainless steel hook</strong>, it holds up to <strong>10 kg</strong> of weight on any smooth surface — walls, doors, tiles, or glass.</p>
-<p>Perfect for hanging kitchen tools, bags, towels, keys, or even your favorite hanger — all without leaving marks or residue.</p>
-<p>✨ <strong>Key Features:</strong></p>
-<ul>
-<li>
-<p>🪝 <strong>Heavy-Duty Grip:</strong> Securely holds up to 10 kg.</p>
-</li>
-<li>
-<p>💧 <strong>Waterproof &amp; Rust-Proof:</strong> Ideal for bathrooms and kitchens.</p>
-</li>
-<li>
-<p>🔁 <strong>Reusable Design:</strong> Easy to remove and reapply without damage.</p>
-</li>
-<li>
-<p>🧱 <strong>Drill-Free Installation:</strong> Just peel, stick, and use.</p>
-</li>
-<li>
-<p>👁 <strong>Invisible Look:</strong> Transparent base blends seamlessly with any décor.</p>
-</li>
-</ul>` },
-      {
-        id: 12, name: 'Trevo Multi-Slot Hanger (Pack of 2)', category: 'Storage', price: 199, oldPrice: 349, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Oct_17_2025_06_01_37_PM.png?v=1764444940', desc: 'Save up to 80% closet space. 360° rotating hook.', badge: 'sale', featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Oct_17_2025_06_01_37_PM.png?v=1764444940', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Oct_18_2025_07_23_26_PM.png?v=1764444940', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/Hanger.jpg?v=1764444940', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/HangerMeasurement.jpg?v=1764444940'], bodyHtml: `<p>Running out of closet space? Not anymore!<br>Meet the <strong>Trevo Multi-Slot Hanger</strong>, your smart solution for organizing clothes neatly while saving up to <strong>80% of closet space</strong>.</p>
-<p>This durable and lightweight hanger features <strong>multiple slots</strong> that let you hang several garments vertically or horizontally — perfect for shirts, trousers, scarves, dupattas, and more.</p>
-<p>Say goodbye to messy wardrobes and tangled hangers — enjoy a clean, organized, and stylish closet every day.</p>
-<p>✨ <strong>Key Features:</strong></p>
-<ul>
-<li>
-<p>🧥 <strong>Space Saver Design:</strong> Store up to 5 garments on a single hanger.</p>
-</li>
-<li>
-<p>💪 <strong>Durable &amp; Strong:</strong> Made from high-quality, thick plastic that won’t bend or break.</p>
-</li>
-<li>
-<p>🔄 <strong>360° Rotating Hook:</strong> Use vertically or horizontally as per your space.</p>
-</li>
-<li>
-<p>👚 <strong>Neat &amp; Tidy Wardrobe:</strong> Keeps clothes wrinkle-free and well arranged.</p>
-</li>
-<li>
-<p>🌈 <strong>Minimal, Modern Look:</strong> Blends perfectly with any closet style.</p>
-</li>
-</ul>
-<hr>
-<h3>💡 <strong>Why You’ll Love It:</strong>
-</h3>
-<p>Whether you’re organizing seasonal clothes or sharing a closet, the <strong>Trevo Multi-Slot Hanger</strong> makes storage effortless.<br><strong>Smart. Stylish. Effortless. – That’s TrevoPK.</strong></p>` },
-      {
-        id: 13, name: 'Trevo Stove Burner Covers (Pack of 2)', category: 'Kitchen', price: 99, oldPrice: 129, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Oct_10_2025_06_03_00_PM.png?v=1761222981', desc: 'Non-stick, reusable gas stove protectors. Heat resistant.', badge: null, featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Oct_10_2025_06_03_00_PM.png?v=1761222981', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Oct_11_2025_11_17_23_AM.png?v=1761218069'], bodyHtml: `<p>Keep your kitchen spotless with <strong>Trevo Stove Burner Covers</strong> — – Non-Stick, Reusable Gas Stove Protectors, the perfect solution to prevent messy spills and oil stains! Made from <strong>high-quality, heat-resistant aluminum</strong>, these covers fit perfectly around your gas burner to catch drips, food spills, and grease splatters before they burn on your stovetop.</p>
-<p>💧 <strong>Key Features:</strong></p>
-<ul>
-<li>
-<p>✅ <strong>Non-Stick &amp; Easy to Clean:</strong> Simply wipe clean or replace — no scrubbing required!</p>
-</li>
-<li>
-<p>🔥 <strong>Heat Resistant &amp; Safe:</strong> Designed to withstand high cooking temperatures without warping or melting.</p>
-</li>
-<li>
-<p>🍳 <strong>Perfect Fit for All Gas Stoves:</strong> Adjustable inner ring fits most burner sizes easily.</p>
-</li>
-<li>
-<p>🌿 <strong>Reusable &amp; Eco-Friendly:</strong> Durable material allows for multiple uses — save money and reduce waste.</p>
-</li>
-<li>
-<p>✨ <strong>Keeps Kitchen Sparkling:</strong> Protects your stove surface from stubborn stains and burnt residue.<br><br><br></p>
-</li>
-</ul>` },
-      {
-        id: 14, name: 'Silicone Pot Holders', category: 'Kitchen', price: 299, oldPrice: 449, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep8_2025_05_16_52PM.png?v=1759228290', desc: 'Heat-resistant silicone mitts for safe grip on hot cookware.', badge: 'sale', featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep8_2025_05_16_52PM.png?v=1759228290', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_8_2025_05_34_18_PM.png?v=1759228383', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_30_2025_03_33_49_PM.png?v=1759228822', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_30_2025_03_45_32_PM.png?v=1759229208'], bodyHtml: `<p>Upgrade your kitchen with these premium <strong>silicone potholders</strong>, designed to give you maximum safety, grip, and control while handling hot cookware. Made from <strong>high-quality, food-grade silicone</strong>, these heat-resistant mitts protect your hands from burns and slips when lifting hot pots, pans, trays, or baking dishes.</p>
-<p>✅ <strong>Heat Resistant &amp; Safe:</strong> Withstand high temperatures, keeping your hands safe from hot cookware and oven surfaces.<br>✅ <strong>Non-Slip Grip:</strong> Textured inner surface ensures a secure hold, preventing accidental drops and spills.<br>✅ <strong>Flexible &amp; Comfortable:</strong> Soft silicone construction allows easy movement and perfect grip without bulkiness.<br>✅ <strong>Easy to Clean:</strong> Simply rinse or toss them in the dishwasher — no fabric stains or odors.<br>✅ <strong>Compact &amp; Space-Saving:</strong> Lightweight and easy to store in any kitchen drawer or hang on a hook.</p>
-<p>Perfect for <strong>cooking, baking, grilling, or serving</strong>, these potholders are a must-have kitchen essential that combines safety, style, and practicality.</p>` },
-      {
-        id: 15, name: 'Silicone Lid Covers (1-Pack)', category: 'Kitchen', price: 299, oldPrice: 449, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep30_2025_02_45_09PM.png?v=1759226949', desc: 'Airtight, heat-resistant seal. Stretches to fit any container.', badge: 'new', featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep30_2025_02_45_09PM.png?v=1759226949', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep30_2025_02_51_03PM.png?v=1759226949', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_30_2025_03_08_42_PM.png?v=1759226966'], bodyHtml: `<p>Keep your kitchen fresh, clean, and spill-free with <strong>TREVO Silicone Stretch Lid Covers</strong> — the ultimate solution to sealing bowls, pots, jars, and containers of all shapes and sizes. Made from <strong>high-quality, food-grade silicone</strong>, these flexible lids create an <strong>airtight, heat-resistant seal</strong> that locks in freshness, prevents leaks, and keeps your food safe longer.</p>
-<p>Whether you’re storing leftovers, reheating meals, or carrying food on the go, these reusable covers <strong>expand and stretch</strong> for a snug fit without slipping off. They are also <strong>microwave-safe, dishwasher-safe, and freezer-friendly</strong>, making them a must-have sustainable alternative to plastic wraps and foils.<br><br><strong>✨ Key Features</strong></p>
-<ul>
-<li style="text-align: left;">🔥 <strong>Heat Resistant:</strong> Safe for microwaves and hot surfaces.</li>
-<li>💧 <strong>Spill &amp; Splash Proof:</strong> Secure airtight seal prevents messy leaks.</li>
-<li>🌱 <strong>Reusable &amp; Eco-Friendly:</strong> Durable silicone design reduces waste.</li>
-<li>📦 <strong>Universal Fit:</strong> Stretches to cover pots, bowls, jars, fruits, and more.</li>
-<li style="text-align: left;">🧼 <strong>Easy to Clean:</strong> Dishwasher-safe for effortless reuse.</li>
-</ul>` },
-      {
-        id: 16, name: 'Fridge Hanging Basket', category: 'Storage', price: 299, oldPrice: 429, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep30_2025_01_23_01PM.png?v=1759220730', desc: 'Maximize your fridge space. Easy to install on shelves.', badge: 'new', featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep30_2025_01_23_01PM.png?v=1759220730', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_30_2025_02_32_53_PM.png?v=1759224788', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_30_2025_02_48_26_PM.png?v=1759225747', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_30_2025_03_00_32_PM.png?v=1759226508', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/FridgeBasket.jpg?v=1763654116', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/tokri.jpg?v=1763654116'], bodyHtml: `<p><strong>Fridge Hanging Basket – Maximize Your Fridge Space</strong></p>
-<p>Keep your refrigerator neat, tidy, and spacious with our <strong>Fridge Hanging Basket</strong>. Designed to hang effortlessly on fridge shelves, this basket creates extra storage space for fruits, vegetables, snacks, and other essentials. No more cluttered shelves or wasted space—organize your fridge like a pro!</p>
-<p>✅ <strong>Space-Saving Design</strong> – Expands your fridge’s storage capacity.<br>✅ <strong>Easy to Install</strong> – Simply slide and hang on existing shelves.<br>✅ <strong>Durable &amp; Lightweight</strong> – Made with high-quality food-grade plastic.<br>✅ <strong>Multi-Purpose Use</strong> – Perfect for fruits, veggies, cheese, or small packs.<br>✅ <strong>Keeps Food Organized</strong> – Say goodbye to messy and overcrowded shelves.</p>
-<p>A smart solution for modern kitchens—<strong>maximize space, keep food fresh, and enjoy a clutter-free fridge</strong>.</p>` },
-      {
-        id: 17, name: 'Disposable Drain Cover', category: 'Home Essentials', price: 199, oldPrice: 329, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/1_1_8f098d6a-0e88-427a-9d18-d6d9058b9fe7.png?v=1759211149', desc: 'Keep drains clean & clog-free. 5 pieces per pack.', badge: 'sale', featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/1_1_8f098d6a-0e88-427a-9d18-d6d9058b9fe7.png?v=1759211149', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/2_86e8556d-0f45-4375-8f99-ad60a265b0aa.png?v=1759211149', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/3_1_d47fa8b4-76e5-4eb0-a57c-e6479123b511.png?v=1759211149', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/4_1_4f6796d6-67c4-42b3-929e-48510498868f.png?v=1759211149'], bodyHtml: `<p><strong>Disposable Drain Cover – Keep Your Drains Clean &amp; Clog-Free 1 pack Contains 5 Pieces</strong></p>
-<p>Say goodbye to messy clogs and costly plumbing issues with our <strong>Disposable Drain Cover</strong>. Designed for convenience and hygiene, this cover effectively traps hair, food particles, and debris before they enter your drain. Simply place it over your sink, shower, or bathtub drain, and once it’s full—just dispose of it.<br><br></p>
-<p>✅ <strong>Easy to Use</strong> – No installation required, just place and remove.<br>✅ <strong>Hygienic &amp; Disposable</strong> – Prevents buildup and odors.<br>✅ <strong>Universal Fit</strong> – Works on most sinks, showers, and bathroom drains.<br>✅ <strong>Cost-Effective</strong> – Save money on plumbing and cleaning services.</p>
-<p>Perfect for homes, hostels, salons, or anywhere drain clogs are a hassle. Keep your drains flowing freely with this simple, effective solution.<br><strong>Package Include : 5 Covers in 1 pack</strong><br></p>` },
-      {
-        id: 18, name: 'ClosetEase Storage Bag', category: 'Storage', price: 299, oldPrice: 459, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/6.png?v=1759209718', desc: 'Spacious, breathable storage bag with transparent window.', badge: 'sale', featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/6.png?v=1759209718', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep27_2025_11_35_00PM.png?v=1759209718', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep26_2025_04_54_28PM.png?v=1759210657', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/pack_of_3.png?v=1759210657', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/org_5.png?v=1759210657', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep26_2025_04_50_52PM.png?v=1759210657', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/organizer_image_3.png?v=1759210657', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/7.png?v=1759210657'], bodyHtml: `<h3>ClosetEase™ Storage Bag</h3>
-<p><strong>Keep Your Wardrobe Neat, Clean &amp; Organized</strong> ✨</p>
-<p>Say goodbye to cluttered wardrobes and messy spaces! The <strong>ClosetEase™ Storage Bag</strong> is designed to give your clothes a safe, dust-free, and organized home. Perfect for storing seasonal clothes, blankets, bedding, and more — all while saving space.</p>
-<p>✅ <strong>Spacious Capacity</strong> – Store clothes, comforters, and linens with ease.<br>✅ <strong>Premium Material</strong> – Made with durable, breathable fabric to keep clothes fresh.<br>✅ <strong>Transparent Window</strong> – Quickly find what you need without opening every bag.<br>✅ <strong>Strong Zippers &amp; Handles</strong> – Built for long-lasting use and easy carrying.<br>✅ <strong>Foldable Design</strong> – Collapses flat when not in use, saving even more space.</p>
-<p>Whether you’re organizing your wardrobe, moving homes, or packing away seasonal items, the <strong>ClosetEase™ Storage Bag</strong> is your go-to solution for effortless storage.</p>
-<p><strong>✔ Perfect for: Bedrooms | Wardrobes | Shelves | Under-bed storage</strong></p>` },
-      {
-        id: 19, name: 'Magic Cleaner Wiper', category: 'Cleaning', price: 229, oldPrice: 329, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsApp_Image_2025-09-28_at_5.25.51_PM.jpg?v=1760356646', desc: 'Streak-free cleaning for glass, mirrors, tiles & countertops.', badge: null, featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsApp_Image_2025-09-28_at_5.25.51_PM.jpg?v=1760356646', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep15_2025_10_37_01AM.png?v=1760356646', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsApp_Image_2025-09-28_at_5.25.51_PM_1.jpg?v=1760356646', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsApp_Image_2025-09-28_at_5.25.51_PM_2.jpg?v=1760356646', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsApp_Image_2025-09-28_at_5.25.52_PM.jpg?v=1760356646', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep15_2025_12_19_58PM.png?v=1760356646', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsApp_Image_2025-09-15_at_12.11.52_PM_1.jpg?v=1760356646', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsApp_Image_2025-09-15_at_12.11.52_PM.jpg?v=1760356646', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/wiper.jpg?v=1763654116'], bodyHtml: `<h3>Streak-Free Cleaning Made Simple</h3>
-<p>Make cleaning fast, effortless, and satisfying with the <strong>Magic Cleaner Wiper</strong> — your all-in-one solution for spotless surfaces. Designed with a flexible silicone blade and ergonomic handle, this powerful tool quickly removes water, dust, and stains <strong>without leaving streaks or scratches.</strong></p>
-<p>✅ <strong>Streak-Free Shine:</strong> Wipes away water and dirt from glass, mirrors, tiles, and countertops in one smooth motion.<br>✅ <strong>Multi-Surface Use:</strong> Perfect for windows, bathroom mirrors, kitchen shelves, shower doors, car windshields, and more.<br>✅ <strong>Compact &amp; Lightweight:</strong> Easy to store and handle, making daily cleaning quicker and more convenient.<br>✅ <strong>Durable &amp; Long-Lasting:</strong> Made with premium quality materials that resist wear and tear for extended use.<br>✅ <strong>Effortless Cleaning:</strong> Cuts cleaning time in half — just swipe and watch the magic happen!</p>
-<p>Whether it’s for your kitchen, bathroom, or windows, the <strong>Magic Cleaner Wiper</strong> turns tough cleaning into a quick and satisfying task — leaving every surface sparkling clean. 🌟</p>` },
-      {
-        id: 20, name: 'SmartClean Silicone Sponge', category: 'Cleaning', price: 299, oldPrice: 429, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep24_2025_11_20_51PM.png?v=1764500848', desc: '2-in-1 scrubber & soap dispenser. Hygienic & quick-drying.', badge: 'new', featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep24_2025_11_20_51PM.png?v=1764500848', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/WhatsApp_Image_2025-10-23_at_5.05.45_PM.jpg?v=1764500848', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep24_2025_11_11_17PM.png?v=1764500848', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep24_2025_11_13_44PM.png?v=1764500848', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/spounge.jpg?v=1764500848'], bodyHtml: `<h3>🧼 <strong>Silicone Dish Soap Brush – 2-in-1 Scrubber &amp; Dispenser</strong>
-</h3>
-<p><strong>Effortless Dishwashing, All in One Tool</strong></p>
-<p>Say goodbye to messy sinks and stubborn grease with our innovative <strong>Silicone Dish Soap Brush.</strong> This clever 2-in-1 tool combines a soft yet powerful silicone scrubber with a built-in soap dispenser — giving you a faster, cleaner, and more hygienic dishwashing experience.</p>
-<p>✅ <strong>2-in-1 Design:</strong> Built-in soap dispenser releases detergent with a gentle press, saving time and effort.<br>✅ <strong>Soft, Non-Scratch Bristles:</strong> Made of high-quality food-grade silicone — tough on grease but safe for non-stick pans, plates, and glassware.<br>✅ <strong>Ergonomic &amp; Easy Grip:</strong> Lightweight, comfortable to hold, and designed for one-hand use.<br>✅ <strong>Hygienic &amp; Quick-Drying:</strong> Silicone material resists bacteria, dries quickly, and is easy to rinse clean.<br>✅ <strong>Multi-Purpose Use:</strong> Perfect for dishes, utensils, pots, kitchen sinks, and even bathroom surfaces.</p>` },
-      {
-        id: 21, name: 'Easy Filter – Stainless Steel', category: 'Kitchen', price: 399, oldPrice: 549, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep24_2025_10_43_36PM.png?v=1758803080', desc: 'Mess-free cooking with spice infuser. Rust-resistant.', badge: null, featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep24_2025_10_43_36PM.png?v=1758803080', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep24_2025_10_53_00PM.png?v=1758803081', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep24_2025_11_09_34PM.png?v=1758803215', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/easyFilter.jpg?v=1763654116'], bodyHtml: `<p><strong>Effortless Flavor. Zero Mess.</strong></p>
-<p>Make your soups, curries, broths, and teas cleaner and more flavorful with our premium <strong>Easy Filter Stainless Steel Infuser.</strong> Designed to hold whole spices, herbs, cloves, cardamom, and other seasonings, this smart kitchen tool keeps your dishes infused with rich aroma <strong>without leaving residue behind.</strong></p>
-<p>✅ <strong>Premium Stainless Steel:</strong> Rust-resistant, durable, and built to last even with daily use.<br>✅ <strong>Mess-Free Cooking:</strong> Infuse your meals with whole spices and herbs while keeping them contained — no more fishing them out later.<br>✅ <strong>Fine Mesh Design:</strong> Allows maximum flavor release while preventing particles from leaking into your dish.<br>✅ <strong>Multi-Purpose Use:</strong> Perfect for soups, curries, teas, stews, stocks, and herbal infusions.<br>✅ <strong>Easy to Use &amp; Clean:</strong> Simply fill, close, steep, and rinse. Dishwasher-safe for quick cleanup.</p>
-<p>Whether you’re preparing a hearty soup or brewing herbal tea, the <strong>Easy Filter Stainless Steel Infuser</strong> makes cooking more convenient, flavorful, and <strong>effortlessly clean.</strong></p>` },
-      {
-        id: 22, name: 'Spoon Rest', category: 'Kitchen', price: 99, oldPrice: 129, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep24_2025_09_44_28PM_b3c81160-0023-40ae-acf8-99d12dd164fc.png?v=1758790213', desc: 'Keep your countertop clean while cooking. Multiple slots.', badge: null, featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep24_2025_09_44_28PM_b3c81160-0023-40ae-acf8-99d12dd164fc.png?v=1758790213', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep24_2025_09_54_08PM_835caadc-1a8e-41de-bfca-6e0a199e5119.png?v=1758790450', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep24_2025_09_57_21PM_d45ade40-45b7-45af-b85f-9bb7fb6657a2.png?v=1758790408', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep24_2025_10_34_55PM_e212b5bf-76e9-47a6-901a-4c8e39761fd3.png?v=1758790450', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPTImageSep24_2025_10_36_48PM_3e65ffc3-0363-4e45-bfb7-29650e240fb8.png?v=1758790409', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/SpoonRest.jpg?v=1763654116'], bodyHtml: `<p>Make cooking cleaner and more convenient with our <strong>premium Spoon Rest</strong>, designed to hold your spoons, ladles, and utensils while you cook. No more messy countertops — simply place your utensil on the rest and keep your kitchen spotless.</p>
-<p><strong>Key Features:</strong></p>
-<ul>
-<li>
-<p>✅ <strong>Heat-Resistant &amp; Durable:</strong> Built to withstand high cooking temperatures without warping or melting.</p>
-</li>
-<li>
-<p>🧼 <strong>Easy to Clean:</strong> Smooth, non-stick surface wipes clean effortlessly or can be placed in the dishwasher.</p>
-</li>
-<li>
-<p>🪄 <strong>Non-Slip Base:</strong> Stays firmly in place on your countertop, even during busy cooking sessions.</p>
-</li>
-<li>
-<p>🍴 <strong>Multiple Slots Design:</strong> Holds multiple utensils at once — perfect for spoons, spatulas, tongs, and more.</p>
-</li>
-<li>
-<p>🪶 <strong>Compact &amp; Space-Saving:</strong> Sleek design fits seamlessly into any kitchen setup without taking up space.</p>
-</li>
-</ul>
-<p>✨ <strong>Say goodbye to countertop mess and hello to a more organized cooking experience!</strong></p>` },
-      {
-        id: 23, name: 'Multifunction Hand Chopper', category: 'Kitchen', price: 699, oldPrice: 1039, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_10_2025_09_44_29_PM.png?v=1758648075', desc: 'Stainless-steel blades for quick meal prep. Compact design.', badge: 'hot', featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_10_2025_09_44_29_PM.png?v=1758648075', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_10_2025_09_55_30_PM.png?v=1758648076', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_10_2025_10_28_19_PM.png?v=1758648075', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_10_2025_09_44_42_PM.png?v=1758648077', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_10_2025_09_50_07_PM.png?v=1758648078'], bodyHtml: `<p>Experience effortless chopping with the <strong>TREVO Multifunction Hand Chopper</strong> – your ultimate kitchen companion for quick meal prep. Designed with sharp, durable stainless-steel blades, it easily handles vegetables, fruits, nuts, and even meat. The <strong>ergonomic hand-pull mechanism</strong> ensures powerful chopping with minimal effort, while the <strong>compact, lightweight design</strong> makes it convenient for everyday use.</p>
-<p>Its <strong>transparent body</strong> allows you to monitor consistency, whether you need fine mincing or coarse chopping. The <strong>easy-to-clean, detachable parts</strong> save time in the kitchen, and its <strong>non-slip base</strong> keeps it steady during use. Perfect for salads, sauces, garnishes, and more – this chopper brings speed, safety, and versatility to your cooking routine.</p>` },
-      {
-        id: 24, name: 'Silicone Hand Gloves', category: 'Cleaning', price: 319, oldPrice: 499, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_27_2025_10_31_36_PM.png?v=1758998438', desc: 'Built-in scrubbing bristles. Heat resistant & reusable.', badge: 'sale', featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_27_2025_10_31_36_PM.png?v=1758998438', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_27_2025_10_34_24_PM.png?v=1758998438', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_27_2025_11_09_40_PM.png?v=1758998438', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/ChatGPT_Image_Sep_27_2025_10_38_29_PM.png?v=1758996992'], bodyHtml: `<p>Make your everyday cleaning <strong>faster, easier, and completely hassle-free</strong> with these premium-quality <strong>Silicone Brush Hand Gloves</strong>. Designed with soft, built-in scrubbing bristles, these gloves allow you to <strong>wash, scrub, and clean</strong> without using extra sponges or brushes.</p>
-<p>These reusable gloves are made from <strong>100% food-grade silicone</strong>, making them safe, durable, heat-resistant, and perfect for all kinds of kitchen and household cleaning tasks.</p>
-<h3><strong>💡 Why You’ll Love Them</strong></h3>
-<ul>
-<li>
-<p>🧽 <strong>Built-In Scrubber Bristles</strong> – No need for separate sponges! Thick silicone bristles help deep clean every corner.</p>
-</li>
-<li>
-<p>💧 <strong>Anti-Slip Grip</strong> – Ensures strong control even when washing greasy dishes.</p>
-</li>
-<li>
-<p>🔥 <strong>Heat Resistant</strong> – Safe to use with hot water, allowing better grease removal.</p>
-</li>
-<li>
-<p>🧤 <strong>Comfortable &amp; Flexible</strong> – Stretchable material fits all hand sizes easily.</p>
-</li>
-<li>
-<p>♻️ <strong>Reusable &amp; Long-Lasting</strong> – Eco-friendly gloves that can be washed &amp; used again.</p>
-</li>
-<li>
-<p>🦠 <strong>Hygienic &amp; Quick-Drying</strong> – Doesn’t hold bacteria like fabric sponges.</p>
-</li>
-<li>
-<p>🏡 <strong>Multi-Purpose Use</strong> – From kitchen cleaning to pet bathing, it’s a must-have tool.</p>
-</li>
-</ul>
-<h3><strong>✨ Perfect For</strong></h3>
-<ul>
-<li>
-<p>Dishwashing</p>
-</li>
-<li>
-<p>Cleaning kitchen slabs, sinks &amp; tiles</p>
-</li>
-<li>
-<p>Washing vegetables &amp; fruits</p>
-</li>
-<li>
-<p>Scrubbing bathroom surfaces</p>
-</li>
-<li>
-<p>Car wash &amp; bike wash</p>
-</li>
-<li>
-<p>Grooming pets</p>
-</li>
-<li>
-<p>Dusting &amp; general cleaning</p>
-</li>
-</ul>
-<h3><strong>🌟 Product Highlights</strong></h3>
-<ul>
-<li>
-<p>Material: Food-Grade Silicone</p>
-</li>
-<li>
-<p>One Size Fits All</p>
-</li>
-<li>
-<p>Temperature Resistant: Up to 160°C</p>
-</li>
-<li>
-<p>Available in Multiple Colors</p>
-</li>
-<li>
-<p>Super elastic &amp; tear-resistant</p>
-</li>
-</ul>
-<hr>
-<p> </p>` },
-      {
-        id: 25, name: '360° Rotating Hooks', category: 'Home Essentials', price: 199, oldPrice: 299, img: 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/00f038ae-8c61-4e18-a5cb-bd11094bc30c.png?v=1758621606', desc: 'Strong adhesive, no drilling. Saves space in any room.', badge: null, featured: false, images: ['https://cdn.shopify.com/s/files/1/0655/7417/4829/files/00f038ae-8c61-4e18-a5cb-bd11094bc30c.png?v=1758621606', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/Untitled_project-Layer_1_1.png?v=1758621606', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/dreamina-2025-09-21-2597-mKAE_ME_3d_mEASUREENTS.jpg?v=1758621606', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/dreamina-2025-09-21-4122-use_this_object_as_sample_make_a_collage....jpg?v=1758621606', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/dreamina-2025-09-21-9768-Make_it_with_a_classy_background.jpg?v=1758621606', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/dreamina-2025-09-21-8972-I_want_to_make_it_more_enhancedand_clea....jpg?v=1758621606', 'https://cdn.shopify.com/s/files/1/0655/7417/4829/files/3.hook.jpg?v=1758621606'], bodyHtml: `<p>🔄 <strong>360° Rotation</strong><br>Easily rotate in any direction to hang or remove items without hassle. Perfect for flexible use in kitchens, bathrooms, or closets.</p>
-<p>🧲 <strong>Strong Adhesive</strong><br>High-quality adhesive backing ensures a firm hold on smooth surfaces – no drilling, no damage, just peel and stick.</p>
-<p>📦 <strong>Saves Space</strong><br>Maximize your storage area by keeping items neatly organized and off the counter. Ideal for small spaces and smart living.</p>
-<p>👌 <strong>Easy Access</strong><br>Quickly reach your essentials with a smooth rotating design – hang, pick, or move items in seconds.</p>` },
-    ];
+    // ── Live products array (loaded from Firestore) ──
+    let PRODUCTS = [];
 
     let cart = JSON.parse(localStorage.getItem('trevoCart') || '[]');
     function saveCart() { localStorage.setItem('trevoCart', JSON.stringify(cart)); }
@@ -3322,8 +2924,48 @@
       }
     });
 
-    renderFeatured();
-    updateCartBadge();
+    // ── Store Initialization ──
+    async function initStore() {
+      updateCartBadge();
+      
+      // Load from localStorage cache first for instant load
+      const cachedProducts = localStorage.getItem('trevoCachedProducts');
+      if (cachedProducts) {
+        try {
+          PRODUCTS = JSON.parse(cachedProducts);
+          renderFeatured();
+          hideLoader();
+        } catch(e) {}
+      }
+
+      try {
+        if (firebaseReady) {
+          // Fetch fresh products from Firestore
+          const firestoreProducts = await firestoreGetAllProducts();
+          if (firestoreProducts && firestoreProducts.length > 0) {
+            PRODUCTS = firestoreProducts;
+            // Update cache
+            localStorage.setItem('trevoCachedProducts', JSON.stringify(PRODUCTS));
+          }
+        }
+      } catch (err) {
+        // Silently handle error in production
+      }
+      
+      // Render the store with the latest data
+      renderFeatured();
+      hideLoader();
+    }
+
+    function hideLoader() {
+      const loader = document.getElementById('storeLoader');
+      if (loader && loader.style.opacity !== '0') {
+        loader.style.opacity = '0';
+        setTimeout(() => loader.remove(), 400);
+      }
+    }
+
+    initStore();
   </script>
 </body>
 
